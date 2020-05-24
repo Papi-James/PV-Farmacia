@@ -27,5 +27,11 @@
         
         <mapping class="entidades.Categoria" />
         <mapping class="entidades.Producto" />
+        <mapping class="entidades.Usuario" />
+        <mapping class="entidades.Medico" />
+        <mapping class="entidades.Venta" />
+        <mapping class="entidades.Entrada" />
+        <mapping class="entidades.DetalleVenta" />
+        <mapping class="entidades.DetalleEntrada" />
     </session-factory>
 </hibernate-configuration>

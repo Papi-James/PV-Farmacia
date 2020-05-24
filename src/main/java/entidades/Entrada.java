@@ -1,5 +1,6 @@
 package entidades;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import javax.persistence.Entity;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Entrada {
+public class Entrada implements Serializable{
  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

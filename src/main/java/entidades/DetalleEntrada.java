@@ -1,5 +1,6 @@
 package entidades;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DetalleEntrada {
+public class DetalleEntrada implements Serializable{
  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

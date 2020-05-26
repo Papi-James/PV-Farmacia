@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>#{msg['categoria.titulo']}</title>
+     <h:head>
+        <title>#{msg['medico.titulo']}</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <h:outputStylesheet library="css" name="EstilosPersonales.css"/>
@@ -12,23 +12,18 @@
     <h:body class="fondoColoresFarmacia">
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
             <div class="container">
-                <f:view>
-                <a class="navbar-brand" href="#">#{msg['categoria.titulo']}</a>
+                <a class="navbar-brand" href="#">#{msg['medico.titulo']}</a>
 
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <h:form class="form-inline" id="frmNav" >
-                        <a class="nav-item nav-link active" href="principal?faces-redirect=true">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></a>
-                        <h:commandLink class="nav-item nav-link" action="#{categoriaMB.prepareAdd()}" value="#{msg['navbar.nuevo']}"/>
-                        <a class="nav-item nav-link" href="#">#{msg['navbar.reporte']}</a>
-                        </h:form>
+                        <a class="nav-item nav-link active" href="#">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></a>
+                        <a class="nav-item nav-link" href="#">#{msg['navbar.nuevo']}</a>
                     </div>
                 </div>
                 <form class="form-inline">
                     <h5 class=" mr-sm-3" style="margin-top: 6px;">Usuario</h5>
                     <a class="btn-outline-danger" href="#">#{msg['navbar.logout']}</a>
                 </form>
-                </f:view>
             </div>
         </nav>
 
@@ -39,12 +34,18 @@
                 <div class="card-body">
                     <f:view>
                         <h:form id="frmCategoria">
-                            <h:dataTable value="#{categoriaMB.listaDeCategorias}" var="dto" class="table table-hover" >
+                            <h:dataTable value="#{medicoMB.listaDeMedicos}" var="dto" class="table table-hover" >
                                 <h:column>
                                     <f:facet name="header">
                                         <h:outputText value="ID"/>
                                     </f:facet>
-                                    <h:outputText value="#{dto.idCategoria}"/>
+                                    <h:outputText value="#{dto.idMedico}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msg['l.m.cedula']}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{dto.cedula}"/>
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">
@@ -54,20 +55,32 @@
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">
-                                        <h:outputText value="#{msg['l.descripcion']}"/>
+                                        <h:outputText value="#{msg['l.paterno']}"/>
                                     </f:facet>
-                                    <h:outputText value="#{dto.descripcion}"/>
+                                    <h:outputText value="#{dto.paterno}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msg['l.materno']}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{dto.materno}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msg['l.m.direccion']}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{dto.direccion}"/>
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['l.acciones']}"/>
                                     </f:facet>
-                                    <h:commandLink action="#{categoriaMB.prepareUpdate()}" actionListener="#{categoriaMB.seleccionarCategoria()}">
-                                        <f:param name="claveSel" value="#{dto.idCategoria}"/>
+                                    <h:commandLink action="#{medicoMB.prepareUpdate()}" actionListener="#{medicoMB.seleccionarMedico()}">
+                                        <f:param name="claveSel" value="#{dto.idMedico}"/>
                                         <h:graphicImage value="/imagenes/update.png" height="35px" width="35px" alt="Actualizar" />
                                     </h:commandLink>
-                                    <h:commandLink action="#{categoriaMB.delete()}" actionListener="#{categoriaMB.seleccionarCategoria()}" style="margin-left: 20px;">
-                                        <f:param name="claveSel" value="#{dto.idCategoria}"/>
+                                    <h:commandLink action="#{medicoMB.delete()}" actionListener="#{medicoMB.seleccionarMedico()}" style="margin-left: 20px;">
+                                        <f:param name="claveSel" value="#{dto.idMedico}"/>
                                         <h:graphicImage value="/imagenes/trash.png" height="35px" width="35px" alt="Eliminar" />
                                     </h:commandLink>
                                 </h:column>

@@ -14,11 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import modelo.dao.EntradaDAO;
-import modelo.dao.VentaDAO;
 import modelo.dto.EntradaDTO;
-import modelo.dto.ProductoDTO;
-import modelo.dto.VentaDTO;
+
 
 /**
  *
@@ -26,33 +27,36 @@ import modelo.dto.VentaDTO;
  */
 @Named(value = "entradaMB")
 @SessionScoped
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EntradaMB extends BaseBean implements Serializable {
 
 
     private EntradaDAO dao = new EntradaDAO();
     private EntradaDTO dto;
-    private List<ProductoDTO> listaDeCategorias;
+    private List<EntradaDTO> listaDeEntradas;
     
     @PostConstruct
     public void init(){
-        listaDeCategorias = new ArrayList<>();
-        listaDeCategorias = dao.readAll();
+        listaDeEntradas = new ArrayList<>();
+        listaDeEntradas = dao.readAll();
     }
     
     public String prepareAdd(){
         dto= new EntradaDTO();
         setAccion(ACC_CREAR);
-        return "/categoria/categoriaForm?faces-redirect=true";
+        return "/entrada/entradaForm?faces-redirect=true";
     }
     
     public String prepareUpdate(){
         setAccion(ACC_ACTUALIZAR);
-        return "/categoria/categoriaForm?faces-redirect=true";
+        return "/entrada/entradaForm?faces-redirect=true";
     }
     
     public String prepareIndex(){
         init();
-        return "/categoria/listadoCategorias?faces-redirect=true";
+        return "/entrada/listadoEntradas?faces-redirect=true";
     }
     
     public String back(){

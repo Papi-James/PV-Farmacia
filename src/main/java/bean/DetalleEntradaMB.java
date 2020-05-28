@@ -17,46 +17,44 @@ import javax.faces.context.FacesContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import modelo.dao.VentaDAO;
-import modelo.dto.ProductoDTO;
-import modelo.dto.VentaDTO;
+import modelo.dao.DetalleEntradaDAO;
+import modelo.dto.DetalleEntradaDTO;
 
 /**
  *
  * @author ramms
  */
-@Named(value = "ventaMB")
+@Named(value = "detalleEntradaMB")
 @SessionScoped
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VentaMB extends BaseBean implements Serializable {
+public class DetalleEntradaMB extends BaseBean implements Serializable {
 
-
-    private VentaDAO dao = new VentaDAO();
-    private VentaDTO dto;
-    private List<ProductoDTO> listaDeVentas;
+    private DetalleEntradaDAO dao = new DetalleEntradaDAO();
+    private DetalleEntradaDTO dto;
+    private List<DetalleEntradaDTO> listaDeDetallesE;
     
     @PostConstruct
     public void init(){
-        listaDeVentas = new ArrayList<>();
-        listaDeVentas = dao.readAll();
+        listaDeDetallesE = new ArrayList<>();
+        listaDeDetallesE = dao.readAll();
     }
     
     public String prepareAdd(){
-        dto= new VentaDTO();
+        dto= new DetalleEntradaDTO();
         setAccion(ACC_CREAR);
-        return "/categoria/ventaForm?faces-redirect=true";
+        return "/detalle/detalleEntradaForm?faces-redirect=true";
     }
     
     public String prepareUpdate(){
         setAccion(ACC_ACTUALIZAR);
-        return "/categoria/ventaForm?faces-redirect=true";
+        return "/detalle/detalleEntradaForm?faces-redirect=true";
     }
     
     public String prepareIndex(){
         init();
-        return "/categoria/listadoVentas?faces-redirect=true";
+        return "/detalle/listadoDetalleE?faces-redirect=true";
     }
     
     public String back(){
@@ -106,8 +104,8 @@ public class VentaMB extends BaseBean implements Serializable {
     
     public void seleccionarCategoria(){
         String claveSel = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("claveSel");
-        dto = new VentaDTO();
-        dto.getEntidad().setIdVenta(Integer.parseInt(claveSel));
+        dto = new DetalleEntradaDTO();
+        dto.getEntidad().setIdDEntrada(Integer.parseInt(claveSel));
         
         try{
             dto = dao.read(dto);

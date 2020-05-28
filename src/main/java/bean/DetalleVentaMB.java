@@ -17,46 +17,46 @@ import javax.faces.context.FacesContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import modelo.dao.VentaDAO;
-import modelo.dto.ProductoDTO;
-import modelo.dto.VentaDTO;
+import modelo.dao.DetalleVentaDAO;
+import modelo.dto.DetalleVentaDTO;
+
 
 /**
  *
  * @author ramms
  */
-@Named(value = "ventaMB")
+@Named(value = "detalleVentaMB")
 @SessionScoped
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VentaMB extends BaseBean implements Serializable {
+public class DetalleVentaMB extends BaseBean implements Serializable {
 
-
-    private VentaDAO dao = new VentaDAO();
-    private VentaDTO dto;
-    private List<ProductoDTO> listaDeVentas;
+    
+    private DetalleVentaDAO dao = new DetalleVentaDAO();
+    private DetalleVentaDTO dto;
+    private List<DetalleVentaDTO> listaDeDetallesV;
     
     @PostConstruct
     public void init(){
-        listaDeVentas = new ArrayList<>();
-        listaDeVentas = dao.readAll();
+        listaDeDetallesV = new ArrayList<>();
+        listaDeDetallesV = dao.readAll();
     }
     
     public String prepareAdd(){
-        dto= new VentaDTO();
+        dto= new DetalleVentaDTO();
         setAccion(ACC_CREAR);
-        return "/categoria/ventaForm?faces-redirect=true";
+        return "/detalle/detalleVentaForm?faces-redirect=true";
     }
     
     public String prepareUpdate(){
         setAccion(ACC_ACTUALIZAR);
-        return "/categoria/ventaForm?faces-redirect=true";
+        return "/detalle/detalleVentaForm?faces-redirect=true";
     }
     
     public String prepareIndex(){
         init();
-        return "/categoria/listadoVentas?faces-redirect=true";
+        return "/detalle/listadoDetalleV?faces-redirect=true";
     }
     
     public String back(){
@@ -106,7 +106,7 @@ public class VentaMB extends BaseBean implements Serializable {
     
     public void seleccionarCategoria(){
         String claveSel = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("claveSel");
-        dto = new VentaDTO();
+        dto = new DetalleVentaDTO();
         dto.getEntidad().setIdVenta(Integer.parseInt(claveSel));
         
         try{
@@ -116,5 +116,6 @@ public class VentaMB extends BaseBean implements Serializable {
             e.printStackTrace();
         }
     }
+
     
 }

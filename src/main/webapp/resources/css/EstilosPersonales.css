@@ -1,0 +1,14 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 23-may-2020, 22:58:39
+    Author     : papitojaime
+*/
+
+.fondoColoresFarmacia{
+background: rgb(186,250,254);
+background: linear-gradient(90deg, rgba(186,250,254,0.5340511204481793) 0%, rgba(113,200,250,0.5228466386554622) 50%, rgba(186,250,254,0.5284488795518207) 100%);
+}

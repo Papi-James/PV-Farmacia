@@ -46,17 +46,17 @@ public class VentaMB extends BaseBean implements Serializable {
     public String prepareAdd(){
         dto= new VentaDTO();
         setAccion(ACC_CREAR);
-        return "/categoria/ventaForm?faces-redirect=true";
+        return "/venta/ventaForm?faces-redirect=true";
     }
     
     public String prepareUpdate(){
         setAccion(ACC_ACTUALIZAR);
-        return "/categoria/ventaForm?faces-redirect=true";
+        return "/venta/ventaForm?faces-redirect=true";
     }
     
     public String prepareIndex(){
         init();
-        return "/categoria/listadoVentas?faces-redirect=true";
+        return "/venta/listadoVentas?faces-redirect=true";
     }
     
     public String back(){

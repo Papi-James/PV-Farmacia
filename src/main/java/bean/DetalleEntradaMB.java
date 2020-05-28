@@ -24,6 +24,7 @@ import modelo.dto.DetalleEntradaDTO;
  *
  * @author ramms
  */
+
 @Named(value = "detalleEntradaMB")
 @SessionScoped
 @Data

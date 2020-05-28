@@ -12,3 +12,10 @@ and open the template in the editor.
 background: rgb(186,250,254);
 background: linear-gradient(90deg, rgba(186,250,254,0.5340511204481793) 0%, rgba(113,200,250,0.5228466386554622) 50%, rgba(186,250,254,0.5284488795518207) 100%);
 }
+
+.primeraColumna {
+width: 300px;
+}
+.segundaColumna {
+width: 500px;
+}

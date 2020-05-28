@@ -1,7 +1,5 @@
 package bean;
 
-import static bean.BaseBean.ACC_ACTUALIZAR;
-import static bean.BaseBean.ACC_CREAR;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

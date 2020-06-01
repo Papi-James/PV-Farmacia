@@ -24,9 +24,12 @@ public class Usuario implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUsuario;
+    private int nombreUsuario;
     private String nombre;
     private String paterno;
     private String materno;
+    private String correo;
     private String contrasenia;
+    private String tipoUsuario;
     
 }

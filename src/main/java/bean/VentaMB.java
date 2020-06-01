@@ -104,7 +104,7 @@ public class VentaMB extends BaseBean implements Serializable {
         return prepareIndex();
     }
     
-    public void seleccionarCategoria(){
+    public void seleccionarVenta(){
         String claveSel = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("claveSel");
         dto = new VentaDTO();
         dto.getEntidad().setIdVenta(Integer.parseInt(claveSel));

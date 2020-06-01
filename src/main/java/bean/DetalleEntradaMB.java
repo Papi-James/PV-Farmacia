@@ -103,7 +103,7 @@ public class DetalleEntradaMB extends BaseBean implements Serializable {
         return prepareIndex();
     }
     
-    public void seleccionarCategoria(){
+    public void seleccionarDEntrada(){
         String claveSel = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("claveSel");
         dto = new DetalleEntradaDTO();
         dto.getEntidad().setIdDEntrada(Integer.parseInt(claveSel));

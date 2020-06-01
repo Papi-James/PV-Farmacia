@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>#{msg['principal.admin']}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <h:outputStylesheet library="css" name="EstilosPersonales.css"/>
+    </h:head>
+    <h:body class="fondoColoresFarmacia">
+        <f:view>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+            <div class="container">
+                <a class="navbar-brand" href="#">#{msg['principal.admin']}</a>
+
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <h:form class="form-inline" id="frmNav" >
+                            <h:commandLink class="nav-item nav-link active" action="/Principal?faces-redirect=true">#{msg['navbar.principal']} <span class="sr-only">(current)</span></h:commandLink>
+                        </h:form>
+                    </div>
+                </div>
+                <form class="form-inline">
+                    <h5 class=" mr-sm-3" style="margin-top: 6px;">Usuario</h5>
+                    <a class="btn-outline-danger" href="#">#{msg['navbar.logout']}</a>
+                </form>
+            </div>
+        </nav>
+        </f:view>
+        
+        <f:view>
+        <div style="margin-top: 60px"> 
+                    <div class="row m-0 justify-content-center align-items-center">
+                        <div class="col-sm-8">
+                            <div  style="width: 50rem;">
+                                <div class="card-body">
+                                    <h:form>
+                                        <table align="center" >
+                                        <tr>
+                                            <td>
+                                                <h:commandLink  action="#{ventaMB.prepareIndex()}">
+                                                    <h:graphicImage value="imagenes/sell.png" style="width: 150px; height: 150px;" />
+                                                </h:commandLink>
+                                            </td>
+                                            <td>
+                                                <h:commandLink  action="#{entradaMB.prepareIndex()}">
+                                                    <h:graphicImage value="imagenes/sale.png" style="width: 150px; height: 150px; margin-left: 110px;" />
+                                                </h:commandLink>
+                                            </td>
+                                            <td>
+                                                <h:commandLink  action="#{productoMB.prepareIndex()}">
+                                                    <h:graphicImage value="imagenes/pill.png" style="width: 150px; height: 150px; margin-left: 110px;" />
+                                                </h:commandLink>
+                                            </td>
+                                        </tr>
+                                        <tr style="text-align: center;">
+                                            <td>
+                                                <h2>#{msg['ventas.titulo']}</h2>
+                                            </td>
+                                            <td>
+                                                <h2 style="margin: 30px; margin-left:120px;">#{msg['entradas.titulo']}</h2>
+                                            </td>
+                                            <td>
+                                                <h2 style="margin: 30px; margin-left:120px;">#{msg['producto.titulo']}</h2>
+                                            </td>
+                                        </tr>
+                                            <tr>
+                                            <td>
+                                                <h:commandLink  action="#{categoriaMB.prepareIndex()}">
+                                                    <h:graphicImage value="imagenes/category.png" style="width: 150px; height: 150px;"/>
+                                                </h:commandLink> 
+                                            </td>
+                                            
+                                            <td>
+                                                <h:commandLink  action="#{medicoMB.prepareIndex()}">
+                                                    <h:graphicImage value="imagenes/doctor.png" style="width: 150px; height: 150px; margin-left: 100px;" />
+                                                </h:commandLink>
+                                            </td>
+                                            <td>
+                                                <h:commandLink  action="#{usuarioMB.prepareIndex()}">
+                                                    <h:graphicImage value="imagenes/contact-list.png" style="width: 150px; height: 150px; margin-left: 115px;" />
+                                                </h:commandLink>
+                                            </td>
+                                            
+                                        </tr>
+                                        <tr style="text-align: center;">
+                                            <td>
+                                                <h2>#{msg['categoria.titulo']}</h2>
+                                            </td>
+                                            <td>
+                                                <h2 style="margin: 30px; margin-left:120px;">#{msg['medico.titulo']}</h2>
+                                            </td>
+                                            <td>
+                                                <h2 style="margin: 30px; margin-left:120px;">#{msg['usuario.titulo']}</h2>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </f:view>
+        
+    </h:body>
+</html>
+

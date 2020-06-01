@@ -104,7 +104,7 @@ public class EntradaMB extends BaseBean implements Serializable {
         return prepareIndex();
     }
     
-    public void seleccionarCategoria(){
+    public void seleccionarEntrada(){
         String claveSel = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("claveSel");
         dto = new EntradaDTO();
         dto.getEntidad().setIdEntrada(Integer.parseInt(claveSel));

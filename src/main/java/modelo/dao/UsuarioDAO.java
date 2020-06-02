@@ -1,6 +1,7 @@
 package modelo.dao;
 
 
+import entidades.Usuario;
 import java.util.List;
 import modelo.dto.UsuarioDTO;
 import org.hibernate.HibernateException;
@@ -91,6 +92,24 @@ public class UsuarioDAO {
                 trans.rollback();
         }
         return l;
+    }
+    
+    public UsuarioDTO readUser(UsuarioDTO dto) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = session.getTransaction();
+        List l= null;
+        
+         try{
+            trans.begin();
+            Query q = session.createSQLQuery("from Usuario u where u.nombreUsuario = "+dto.getEntidad().getNombreUsuario()+" and u.contrasenia = "+dto.getEntidad().getContrasenia());
+            l = q.list();
+            trans.commit();
+        }catch(HibernateException he){
+        if(trans!=null && trans.isActive())
+            trans.rollback();
+        }
+         dto.setEntidad((Usuario)l.get(0));
+         return dto;
     }
     
     /*public static void main(String[] args) {

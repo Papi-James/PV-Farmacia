@@ -35,7 +35,7 @@ public class UsuarioDTO {
         sb.append("nombreReal: ").append(getEntidad().getNombre()).append("\n");
         sb.append("paternoUsuario: ").append(getEntidad().getPaterno()).append("\n");
         sb.append("maternoUsuario: ").append(getEntidad().getMaterno()).append("\n");
-        sb.append("correoUsuario: ").append(getEntidad().getCorreo()).append("\n");
+        sb.append("correoUsuario: ").append(getEntidad().getEmail()).append("\n");
         sb.append("contraUsuario: ").append(getEntidad().getContrasenia()).append("\n");
         sb.append("tipoUsuario: ").append(getEntidad().getTipoUsuario()).append("\n");
         return sb.toString();

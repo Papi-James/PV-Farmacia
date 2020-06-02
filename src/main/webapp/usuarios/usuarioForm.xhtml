@@ -39,7 +39,7 @@
                 <div class="card-body text-white" style="margin: 20px;">
                     <h:panelGrid >
                         <f:view>
-                            <h:form id="frmCategoria" >
+                            <h:form id="frmUsuario" >
                                 <h:inputHidden id="accion" value="#{usuarioMB.accion}"/>
                                 <h:panelGrid columns="2" class="form-group row">
                                     <h:outputText value="ID" class="col-sm-2 col-form-label" rendered="#{usuarioMB.modoActualizar}"/>
@@ -58,7 +58,7 @@
                                     <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.materno}" class="form-control"/>
                                     
                                     <h:outputText value="#{msg['l.u.correo']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.correo}" class="form-control"/>
+                                    <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.email}" class="form-control"/>
                                     
                                     <h:outputText value="#{msg['l.u.contra']}" class="col-sm-2 col-form-label"/>
                                     <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.contrasenia}" class="form-control"/>

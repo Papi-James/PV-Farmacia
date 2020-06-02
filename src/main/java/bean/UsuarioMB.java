@@ -37,17 +37,17 @@ public class UsuarioMB extends BaseBean implements Serializable {
     public String prepareAdd(){
         dto= new UsuarioDTO();
         setAccion(ACC_CREAR);
-        return "/usuarios/usuarioForm?faces-redirect=true";
+        return "/usuario/usuarioForm?faces-redirect=true";
     }
     
     public String prepareUpdate(){
         setAccion(ACC_ACTUALIZAR);
-        return "/usuarios/formUsuario?faces-redirect=true";
+        return "/usuario/usuarioForm?faces-redirect=true";
     }
     
     public String prepareIndex(){
         init();
-        return "/usuarios/listadoUsuarios?faces-redirect=true";
+        return "/usuario/listadoUsuarios?faces-redirect=true";
     }
     
     public String back(){

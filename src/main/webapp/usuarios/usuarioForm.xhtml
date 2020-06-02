@@ -14,7 +14,7 @@
                 <f:view>
                     <h:form class="form-inline">
                 <h:commandLink class="navbar-brand" action="#{usuarioMB.back()}" value="#{msg['usuario.titulo']}"/>
-                
+
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.prepareInterfazAdmin()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
@@ -28,9 +28,9 @@
                 </f:view>
             </div>
         </nav>
-        
-        
-        
+
+
+
         <div class="container ">
             <div class="text-white bg-info mb-3" style="width: 27rem; margin: auto; margin-top: 100px;" >
                 <div class=" text-center">
@@ -39,41 +39,41 @@
                 <div class="card-body text-white" style="margin: 20px;">
                     <h:panelGrid >
                         <f:view>
-                            <h:form id="frmUsuario" >
+                            <h:form id="frmCategoria" >
                                 <h:inputHidden id="accion" value="#{usuarioMB.accion}"/>
                                 <h:panelGrid columns="2" class="form-group row">
                                     <h:outputText value="ID" class="col-sm-2 col-form-label" rendered="#{usuarioMB.modoActualizar}"/>
                                     <h:outputText value="#{usuarioMB.dto.entidad.idUsuario}" rendered="#{usuarioMB.modoActualizar}" class="col-form-label"/>
-                                    
+
                                     <h:outputText value="#{msg['l.u.nomUsuario']}" class="col-sm-2 col-form-label"/>
                                     <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.nombreUsuario}" class="form-control"/>
-                                    
+
                                     <h:outputText value="#{msg['l.u.nombre']}" class="col-sm-2 col-form-label"/>
                                     <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.nombre}" class="form-control"/>
-                                    
+
                                     <h:outputText value="#{msg['l.u.paterno']}" class="col-sm-2 col-form-label"/>
                                     <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.paterno}" class="form-control"/>
-                                    
+
                                     <h:outputText value="#{msg['l.u.materno']}" class="col-sm-2 col-form-label"/>
                                     <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.materno}" class="form-control"/>
-                                    
+
                                     <h:outputText value="#{msg['l.u.correo']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.email}" class="form-control"/>
-                                    
+                                    <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.correo}" class="form-control"/>
+
                                     <h:outputText value="#{msg['l.u.contra']}" class="col-sm-2 col-form-label"/>
                                     <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.contrasenia}" class="form-control"/>
-                                    
+
                                     <h:outputText value="#{msg['l.u.tipoUsuario']}" class="col-sm-2 col-form-label"/>
                                     <h:inputText id="formNombreC" value="#{usuarioMB.dto.entidad.tipoUsuario}" class="form-control"/>
-                                  
+
                                 </h:panelGrid>
                                 <div>
                                     <h:commandButton value="#{msg.botonNuevo}" action="#{usuarioMB.add()}" rendered="#{usuarioMB.modoCrear}" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>
-                                    
+
                                     <h:commandButton value="#{msg.botonActualizar}" action="#{usuarioMB.update()}" rendered="#{usuarioMB.modoActualizar}" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>
-                                    
+
                                     <h:commandButton value="#{msg.botonRegresar}" action="#{usuarioMB.back()}" class="alert alert-danger btn-block" style="margin-top: 30px; margin-left: 30px;"/>
-                                    
+
                                     <!--<h:commandButton value="#{msg['botonNuevo']}" action="#" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>-->
                                 </div>
                             </h:form>
@@ -84,4 +84,3 @@
         </div>
     </h:body>
 </html>
-

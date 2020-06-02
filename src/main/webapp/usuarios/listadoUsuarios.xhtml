@@ -31,9 +31,9 @@
             </div>
         </nav>
          </f:view>
-        
-        
-        
+
+
+
         <div style="margin-top: 40px; margin-left: 15px; margin-right: 15px;" >
             <div class="card mb-3">
 
@@ -75,7 +75,7 @@
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['l.u.correo']}"/>
                                     </f:facet>
-                                    <h:outputText value="#{dto.email}"/>
+                                    <h:outputText value="#{dto.correo}"/>
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">
@@ -89,7 +89,7 @@
                                     </f:facet>
                                     <h:outputText value="#{dto.tipoUsuario}"/>
                                 </h:column>
-   
+
                                 <h:column >
                                     <f:facet name="header" >
                                         <h:outputText value="#{msg['l.acciones']}"/>
@@ -104,16 +104,13 @@
                                     </h:commandLink>
                                 </h:column>
 
-                                
+
                             </h:dataTable>
                         </h:form>
                     </f:view>
                 </div>
             </div>
         </div>
-        
+
     </h:body>
 </html>
-
-
-

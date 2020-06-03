@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>#{msg['login.titulo']}</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
@@ -20,6 +21,7 @@
                     <h:panelGrid>
                         <f:view>
                             <h:form id="frmInicioSesion">
+                                <p:growl id="message" showDetail="true" sticky="true"  />
                                 <h:panelGrid columns="2" class="form-group row">
                                     <h:outputText value="#{msg['login.nombreu']}" class="col-sm-2 col-form-label"/>
                                     <h:inputText id="formNombreUsuario"  class="form-control" value="#{loginMB.dto.entidad.nombreUsuario}"/>
@@ -27,9 +29,14 @@
                                     <h:outputText value="#{msg['login.contra']}" class="col-sm-2 col-form-label"/>
                                     <h:inputSecret id="formContrasenia" class="form-control" value="#{loginMB.dto.entidad.contrasenia}"/>
                                 </h:panelGrid>
+                                <!--<p:messages id="messages" showDetail="true" closable="true">
+        
+    </p:messages>-->
+                                
                                 <div>
-                                    <h:commandButton value="#{msg['login.botonLogin']}" action="#{loginMB.login()}" class="alert alert-info btn-block" style="margin-top: 30px;"/>
+                                    <h:commandButton value="#{msg['login.botonLogin']}" action="#{loginMB.login()}" class="alert alert-info btn-block" style="margin-top: 30px;" />
                                 </div>
+                                
                             </h:form>
                         </f:view>
                     </h:panelGrid>

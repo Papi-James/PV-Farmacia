@@ -101,15 +101,20 @@ public class UsuarioDAO {
         
          try{
             trans.begin();
-            Query q = session.createSQLQuery("from Usuario u where u.nombreUsuario = "+dto.getEntidad().getNombreUsuario()+" and u.contrasenia = "+dto.getEntidad().getContrasenia());
+            Query q = session.createQuery("from Usuario u where u.nombreUsuario = '"+dto.getEntidad().getNombreUsuario()+"' and u.contrasenia = '"+dto.getEntidad().getContrasenia()+"'");
             l = q.list();
             trans.commit();
         }catch(HibernateException he){
         if(trans!=null && trans.isActive())
             trans.rollback();
         }
+         if(l.isEmpty())
+             return null;
+         else
+         {
          dto.setEntidad((Usuario)l.get(0));
          return dto;
+         }
     }
     
     /*public static void main(String[] args) {

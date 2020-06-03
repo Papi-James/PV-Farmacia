@@ -19,3 +19,8 @@ width: 300px;
 .segundaColumna {
 width: 500px;
 }
+
+.ui-growl-item {
+background: rgb(252,19,0);
+background: linear-gradient(90deg, rgba(252,19,0,0.5648634453781513) 0%, rgba(250,113,113,0.4023984593837535) 100%);
+}

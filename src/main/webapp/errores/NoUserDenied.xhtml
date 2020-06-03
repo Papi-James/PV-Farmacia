@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Sesion no iniciada</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <h:outputStylesheet library="css" name="EstilosPersonales.css"/>
+    </h:head>
+    <h:body class="fondoColoresFarmacia">
+
+        <div class="container ">
+            <div style="width: 27rem; margin: auto; margin-top: 100px;" >
+                <div class=" text-center">
+                    <img src="./../imagenes/error.png" style="height: 100px; width: 100px; margin: 30px;"></img>
+                    <h1>#{msg['error.noSesion']}</h1>
+                    No se puede acceder a la página solicitada debido a que no has iniciado sesión.
+                    Inicia sesión para poder visualizar el contenido
+                </div>
+                <div class="card-body text-white" style="margin: 20px;">
+                    <f:view>
+                        <h:form>
+                            <h:commandButton  class="alert btn-success btn-block" action="#{loginMB.prepareLogin()}" value="Iniciar Sesión"/>
+                        </h:form>
+                    </f:view>
+                </div>
+            </div>
+        </div>
+
+    </h:body>
+</html>
+

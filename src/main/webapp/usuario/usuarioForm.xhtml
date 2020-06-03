@@ -1,7 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>#{msg['categoria.titulo.nuevo']}</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
@@ -9,81 +10,95 @@
         <h:outputStylesheet library="css" name="EstilosPersonales.css"/>
     </h:head>
     <h:body class="fondoColoresFarmacia">
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-            <div class="container">
-                <f:view>
-                    <h:form class="form-inline">
-                        <h:commandLink class="navbar-brand" action="#{usuarioMB.back()}" value="#{msg['usuario.titulo']}"/>
+        <c:choose>
+            <c:when test="#{loginMB.loged}">
+                <c:choose>
+                    <c:when test="#{loginMB.administrador}">
+                        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+                            <div class="container">
+                                <f:view>
+                                    <h:form class="form-inline">
+                                        <h:commandLink class="navbar-brand" action="#{usuarioMB.back()}" value="#{msg['usuario.titulo']}"/>
 
-                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                            <div class="navbar-nav">
-                                <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.prepareInterfazAdmin()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
+                                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                                            <div class="navbar-nav">
+                                                <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.prepareInterfazAdmin()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                    <h:form class="form-inline" id="frmNav2" >
+                                        <h5 class=" mr-sm-3" style="margin-top: 6px;">#{loginMB.UserName()}</h5>
+                                        <h:commandButton class="btn-outline-danger" action="#{loginMB.logout()}" value="#{msg['navbar.logout']}"/>
+                                    </h:form>
+                                </f:view>
                             </div>
-                        </div>
-                    </h:form>
-                    <h:form class="form-inline" id="frmNav2" >
-                        <h5 class=" mr-sm-3" style="margin-top: 6px;">#{loginMB.UserName()}</h5>
-                        <h:commandButton class="btn-outline-danger" action="#{loginMB.logout()}" value="#{msg['navbar.logout']}"/>
-                    </h:form>
-                </f:view>
-            </div>
-        </nav>
+                        </nav>
 
 
 
-        <div class="container ">
-            <div class="text-white bg-info mb-3" style="width: 27rem; margin: auto; margin-top: 100px;" >
-                <div class=" text-center">
-                    <h1>#{msg['fu.datos']}</h1>
-                </div>
-                <div class="card-body text-white" style="margin: 20px;">
-                    <h:panelGrid >
-                        <f:view>
-                            <h:form id="frmCategoria" >
-                                <h:inputHidden id="accion" value="#{usuarioMB.accion}"/>
-                                <h:panelGrid columns="2" class="form-group row">
-                                    <h:outputText value="ID" class="col-sm-2 col-form-label" rendered="#{usuarioMB.modoActualizar}"/>
-                                    <h:outputText value="#{usuarioMB.dto.entidad.idUsuario}" rendered="#{usuarioMB.modoActualizar}" class="col-form-label"/>
+                        <div class="container ">
+                            <div class="text-white bg-info mb-3" style="width: 27rem; margin: auto; margin-top: 100px;" >
+                                <div class=" text-center">
+                                    <h1>#{msg['fu.datos']}</h1>
+                                </div>
+                                <div class="card-body text-white" style="margin: 20px;">
+                                    <h:panelGrid >
+                                        <f:view>
+                                            <h:form id="frmCategoria" >
+                                                <h:inputHidden id="accion" value="#{usuarioMB.accion}"/>
+                                                <h:panelGrid columns="2" class="form-group row">
+                                                    <h:outputText value="ID" class="col-sm-2 col-form-label" rendered="#{usuarioMB.modoActualizar}"/>
+                                                    <h:outputText value="#{usuarioMB.dto.entidad.idUsuario}" rendered="#{usuarioMB.modoActualizar}" class="col-form-label"/>
 
-                                    <h:outputText value="#{msg['l.u.nombre']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputText id="formNombre" value="#{usuarioMB.dto.entidad.nombre}" class="form-control"/>
+                                                    <h:outputText value="#{msg['l.u.nombre']}" class="col-sm-2 col-form-label"/>
+                                                    <h:inputText id="formNombre" value="#{usuarioMB.dto.entidad.nombre}" class="form-control"/>
 
-                                    <h:outputText value="#{msg['l.u.paterno']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputText id="formPaterno" value="#{usuarioMB.dto.entidad.paterno}" class="form-control"/>
+                                                    <h:outputText value="#{msg['l.u.paterno']}" class="col-sm-2 col-form-label"/>
+                                                    <h:inputText id="formPaterno" value="#{usuarioMB.dto.entidad.paterno}" class="form-control"/>
 
-                                    <h:outputText value="#{msg['l.u.materno']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputText id="formMaterno" value="#{usuarioMB.dto.entidad.materno}" class="form-control"/>
+                                                    <h:outputText value="#{msg['l.u.materno']}" class="col-sm-2 col-form-label"/>
+                                                    <h:inputText id="formMaterno" value="#{usuarioMB.dto.entidad.materno}" class="form-control"/>
 
-                                    <h:outputText value="#{msg['l.u.correo']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputText id="formCorreo" value="#{usuarioMB.dto.entidad.email}" class="form-control"/>
+                                                    <h:outputText value="#{msg['l.u.correo']}" class="col-sm-2 col-form-label"/>
+                                                    <h:inputText id="formCorreo" value="#{usuarioMB.dto.entidad.email}" class="form-control"/>
 
-                                    <h:outputText value="#{msg['l.u.nomUsuario']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputText id="formNombreUsuario" value="#{usuarioMB.dto.entidad.nombreUsuario}" class="form-control"/>
+                                                    <h:outputText value="#{msg['l.u.nomUsuario']}" class="col-sm-2 col-form-label"/>
+                                                    <h:inputText id="formNombreUsuario" value="#{usuarioMB.dto.entidad.nombreUsuario}" class="form-control"/>
 
-                                    <h:outputText value="#{msg['l.u.contra']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputText id="formContra" value="#{usuarioMB.dto.entidad.contrasenia}" class="form-control"/>
+                                                    <h:outputText value="#{msg['l.u.contra']}" class="col-sm-2 col-form-label"/>
+                                                    <h:inputText id="formContra" value="#{usuarioMB.dto.entidad.contrasenia}" class="form-control"/>
 
-                                    <h:outputText value="#{msg['l.u.tipoUsuario']}" class="col-sm-2 col-form-label"/>
-                                    <h:selectOneMenu id="formTipoUsuario" value="#{usuarioMB.dto.entidad.tipoUsuario}" class="form-control">
-                                        <f:selectItem itemValue="2" itemLabel="Cajero"/>
-                                        <f:selectItem itemValue="1" itemLabel="Administrador"/>
-                                    </h:selectOneMenu>
+                                                    <h:outputText value="#{msg['l.u.tipoUsuario']}" class="col-sm-2 col-form-label"/>
+                                                    <h:selectOneMenu id="formTipoUsuario" value="#{usuarioMB.dto.entidad.tipoUsuario}" class="form-control">
+                                                        <f:selectItem itemValue="2" itemLabel="Cajero"/>
+                                                        <f:selectItem itemValue="1" itemLabel="Administrador"/>
+                                                    </h:selectOneMenu>
 
-                                </h:panelGrid>
-                                <div>
-                                    <h:commandButton value="#{msg.botonNuevo}" action="#{usuarioMB.add()}" rendered="#{usuarioMB.modoCrear}" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>
+                                                </h:panelGrid>
+                                                <div>
+                                                    <h:commandButton value="#{msg.botonNuevo}" action="#{usuarioMB.add()}" rendered="#{usuarioMB.modoCrear}" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>
 
-                                    <h:commandButton value="#{msg.botonActualizar}" action="#{usuarioMB.update()}" rendered="#{usuarioMB.modoActualizar}" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>
+                                                    <h:commandButton value="#{msg.botonActualizar}" action="#{usuarioMB.update()}" rendered="#{usuarioMB.modoActualizar}" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>
 
-                                    <h:commandButton value="#{msg.botonRegresar}" action="#{usuarioMB.back()}" class="alert alert-danger btn-block" style="margin-top: 30px; margin-left: 30px;"/>
+                                                    <h:commandButton value="#{msg.botonRegresar}" action="#{usuarioMB.back()}" class="alert alert-danger btn-block" style="margin-top: 30px; margin-left: 30px;"/>
 
                                     <!--<h:commandButton value="#{msg['botonNuevo']}" action="#" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>-->
+                                                </div>
+                                            </h:form>
+                                        </f:view>
+                                    </h:panelGrid>
                                 </div>
-                            </h:form>
-                        </f:view>
-                    </h:panelGrid>
-                </div>
-            </div>
-        </div>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        #{interfacesMB.noAdmin()}
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
+            <c:otherwise>
+                #{interfacesMB.noAuth()}
+            </c:otherwise>
+        </c:choose>
     </h:body>
 </html>

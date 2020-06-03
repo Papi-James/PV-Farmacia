@@ -2,99 +2,114 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-     <h:head>
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
         <title>#{msg['medico.titulo']}</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <h:outputStylesheet library="css" name="EstilosPersonales.css"/>
     </h:head>
     <h:body class="fondoColoresFarmacia">
-         <f:view>
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-            <div class="container">
-                <a class="navbar-brand" href="#">#{msg['medico.titulo']}</a>
+        <c:choose>
+            <c:when test="#{loginMB.loged}">
+                <c:choose>
+                    <c:when test="#{loginMB.administrador}">
+                        <f:view>
+                            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+                                <div class="container">
+                                    <a class="navbar-brand" href="#">#{msg['medico.titulo']}</a>
 
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <h:form class="form-inline" id="frmNav" >
-                            <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.prepareInterfazAdmin()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
-                        <h:commandLink class="nav-item nav-link" action="#{MedicoMB.prepareAdd()}" value="#{msg['navbar.nuevo']}"/>
-                        </h:form>
-                    </div>
-                </div>
-                <h:form class="form-inline">
-                    <h5 class=" mr-sm-3" style="margin-top: 6px;">#{loginMB.UserName()}</h5>
-                    <h:commandButton class="btn-outline-danger" action="#{loginMB.logout()}" value="#{msg['navbar.logout']}"/>
-                </h:form>
-            </div>
-        </nav>
-         </f:view>
+                                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                                        <div class="navbar-nav">
+                                            <h:form class="form-inline" id="frmNav" >
+                                                <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.prepareInterfazAdmin()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
+                                                <h:commandLink class="nav-item nav-link" action="#{MedicoMB.prepareAdd()}" value="#{msg['navbar.nuevo']}"/>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <h:form class="form-inline">
+                                        <h5 class=" mr-sm-3" style="margin-top: 6px;">#{loginMB.UserName()}</h5>
+                                        <h:commandButton class="btn-outline-danger" action="#{loginMB.logout()}" value="#{msg['navbar.logout']}"/>
+                                    </h:form>
+                                </div>
+                            </nav>
+                        </f:view>
 
 
-        <div class="container" style="margin-top: 40px;" >
-            <div class="card mb-3">
+                        <div class="container" style="margin-top: 40px;" >
+                            <div class="card mb-3">
 
-                <div class="card-body">
-                    <f:view>
-                        <h:form id="frmCategoria">
-                            <h:dataTable value="#{medicoMB.listaDeMedicos}" var="dto" class="table table-hover" >
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="ID"/>
-                                    </f:facet>
-                                    <h:outputText value="#{dto.idMedico}"/>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="#{msg['l.m.cedula']}"/>
-                                    </f:facet>
-                                    <h:outputText value="#{dto.cedula}"/>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="#{msg['l.nombre']}"/>
-                                    </f:facet>
-                                    <h:outputText value="#{dto.nombre}"/>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="#{msg['l.paterno']}"/>
-                                    </f:facet>
-                                    <h:outputText value="#{dto.paterno}"/>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="#{msg['l.materno']}"/>
-                                    </f:facet>
-                                    <h:outputText value="#{dto.materno}"/>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="#{msg['l.m.direccion']}"/>
-                                    </f:facet>
-                                    <h:outputText value="#{dto.direccion}"/>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">
-                                        <h:outputText value="#{msg['l.acciones']}"/>
-                                    </f:facet>
-                                    <h:commandLink action="#{medicoMB.prepareUpdate()}" actionListener="#{medicoMB.seleccionarMedico()}">
-                                        <f:param name="claveSel" value="#{dto.idMedico}"/>
-                                        <h:graphicImage value="/imagenes/update.png" height="35px" width="35px" alt="Actualizar" />
-                                    </h:commandLink>
-                                    <h:commandLink action="#{medicoMB.delete()}" actionListener="#{medicoMB.seleccionarMedico()}" style="margin-left: 20px;">
-                                        <f:param name="claveSel" value="#{dto.idMedico}"/>
-                                        <h:graphicImage value="/imagenes/trash.png" height="35px" width="35px" alt="Eliminar" />
-                                    </h:commandLink>
-                                </h:column>
+                                <div class="card-body">
+                                    <f:view>
+                                        <h:form id="frmCategoria">
+                                            <h:dataTable value="#{medicoMB.listaDeMedicos}" var="dto" class="table table-hover" >
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="ID"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.idMedico}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.m.cedula']}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.cedula}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.nombre']}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.nombre}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.paterno']}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.paterno}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.materno']}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.materno}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.m.direccion']}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.direccion}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.acciones']}"/>
+                                                    </f:facet>
+                                                    <h:commandLink action="#{medicoMB.prepareUpdate()}" actionListener="#{medicoMB.seleccionarMedico()}">
+                                                        <f:param name="claveSel" value="#{dto.idMedico}"/>
+                                                        <h:graphicImage value="/imagenes/update.png" height="35px" width="35px" alt="Actualizar" />
+                                                    </h:commandLink>
+                                                    <h:commandLink action="#{medicoMB.delete()}" actionListener="#{medicoMB.seleccionarMedico()}" style="margin-left: 20px;">
+                                                        <f:param name="claveSel" value="#{dto.idMedico}"/>
+                                                        <h:graphicImage value="/imagenes/trash.png" height="35px" width="35px" alt="Eliminar" />
+                                                    </h:commandLink>
+                                                </h:column>
 
-                            </h:dataTable>
-                        </h:form>
-                    </f:view>
-                </div>
-            </div>
-        </div>
+                                            </h:dataTable>
+                                        </h:form>
+                                    </f:view>
+                                </div>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        #{interfacesMB.noAdmin()}
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
+            <c:otherwise>
+                #{interfacesMB.noAuth()}
+            </c:otherwise>
+        </c:choose>
     </h:body>
 </html>
 

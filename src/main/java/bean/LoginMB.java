@@ -78,6 +78,16 @@ public class LoginMB implements Serializable {
            return "null";
     }
     
+    public boolean isLoged()
+    {
+       HttpSession s = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+       //String us = s.getAttribute("nombreUsuario").toString(); 
+       if(s.getAttribute("nombreUsuario")==null)
+           return false;
+       else
+           return true;
+    }
+    
     public boolean isAdministrador(){
        int userType = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tipoUsuario");
        if(userType==1)
@@ -90,6 +100,11 @@ public class LoginMB implements Serializable {
     {
         HttpSession s = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         s.invalidate();
+        return prepareLogin();
+    }
+    
+    public String prepareLogin()
+    {
         return "/index?faces-redirect=true";
     }
 }

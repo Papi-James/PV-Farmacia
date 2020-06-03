@@ -12,97 +12,106 @@
     </h:head>
     <h:body class="fondoColoresFarmacia">
 
-        <f:view>
-            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-                <div class="container">
-                    <a class="navbar-brand" href="#">#{msg['navbar.nombreF']}</a>
-
-                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                        <div class="navbar-nav">
-                        </div>
-                    </div>
-                    <h:form class="form-inline">
-                        <h5 class=" mr-sm-3" style="margin-top: 6px;">¡Bienvenido, #{loginMB.UserName()}!</h5>
-                        <h:commandButton class="btn-outline-danger" action="#{loginMB.logout()}" value="#{msg['navbar.logout']}"></h:commandButton>
-                    </h:form>
-                </div>
-            </nav>
-        </f:view>
-
         <c:choose>
-            <c:when test="#{loginMB.administrador}">
+            <c:when test="#{loginMB.loged}">
                 <f:view>
-                    <div style="margin-top: 60px"> 
-                        <div class="row m-0 justify-content-center align-items-center">
-                            <div class="col-sm-8">
-                                <div  style="width: 50rem;">
-                                    <div class="card-body">
-                                        <h:form>
-                                            <table align="center" >
-                                                <tr>
-                                                    <td>
-                                                        <h:commandLink  action="/InterfazPV?faces-redirect=true">
-                                                            <h:graphicImage value="imagenes/point-of-sale.png" style="width: 250px; height: 250px;"/>
-                                                        </h:commandLink>
+                    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+                        <div class="container">
+                            <a class="navbar-brand" href="#">#{msg['navbar.nombreF']}</a>
 
-                                                    </td>
-                                                    <td>
-                                                        <h:commandLink  action="/InterfazAdmin?faces-redirect=true">
-                                                            <h:graphicImage value="imagenes/accounting.png" style="width: 250px; height: 250px; margin-left: 100px;" />
-                                                        </h:commandLink>
-                                                    </td>
+                            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                                <div class="navbar-nav">
+                                </div>
+                            </div>
+                            <h:form class="form-inline">
+                                <h5 class=" mr-sm-3" style="margin-top: 6px;">¡Bienvenido, #{loginMB.UserName()}!</h5>
+                                <h:commandButton class="btn-outline-danger" action="#{loginMB.logout()}" value="#{msg['navbar.logout']}"></h:commandButton>
+                            </h:form>
+                        </div>
+                    </nav>
+                </f:view>
 
-                                                </tr>
-                                                <tr style="text-align: center;">
-                                                    <td>
-                                                        <h2 style="margin: 30px">#{msg['principal.pdv']}</h2>
-                                                    </td>
-                                                    <td>
-                                                        <h2 style="margin: 30px; margin-left:120px;">#{msg['principal.admin']}</h2>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </h:form>
+                <c:choose>
+                    <c:when test="#{loginMB.administrador}">
+                        <f:view>
+                            <div style="margin-top: 60px"> 
+                                <div class="row m-0 justify-content-center align-items-center">
+                                    <div class="col-sm-8">
+                                        <div  style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h:form>
+                                                    <table align="center" >
+                                                        <tr>
+                                                            <td>
+                                                                <h:commandLink  action="/InterfazPV?faces-redirect=true">
+                                                                    <h:graphicImage value="imagenes/point-of-sale.png" style="width: 250px; height: 250px;"/>
+                                                                </h:commandLink>
+
+                                                            </td>
+                                                            <td>
+                                                                <h:commandLink  action="/InterfazAdmin?faces-redirect=true">
+                                                                    <h:graphicImage value="imagenes/accounting.png" style="width: 250px; height: 250px; margin-left: 100px;" />
+                                                                </h:commandLink>
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr style="text-align: center;">
+                                                            <td>
+                                                                <h2 style="margin: 30px">#{msg['principal.pdv']}</h2>
+                                                            </td>
+                                                            <td>
+                                                                <h2 style="margin: 30px; margin-left:120px;">#{msg['principal.admin']}</h2>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </h:form>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </f:view>
+                        </f:view>
+                    </c:when>
+                    <c:otherwise>
+                        <f:view>
+                            <div style="margin-top: 60px"> 
+                                <div class="row m-0 justify-content-center align-items-center">
+                                    <div class="col-sm-8">
+                                        <div  style="width: 50rem;">
+                                            <div class="card-body">
+                                                <h:form>
+                                                    <table align="center" >
+                                                        <tr>
+                                                            <td>
+                                                                <h:commandLink  action="/InterfazPV?faces-redirect=true">
+                                                                    <h:graphicImage value="imagenes/point-of-sale.png" style="width: 250px; height: 250px;"/>
+                                                                </h:commandLink>
+
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="text-align: center;">
+                                                            <td>
+                                                                <h2 style="margin: 30px">#{msg['principal.pdv']}</h2>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </h:form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </f:view>
+
+                    </c:otherwise>
+                </c:choose>
             </c:when>
             <c:otherwise>
-                <f:view>
-                    <div style="margin-top: 60px"> 
-                        <div class="row m-0 justify-content-center align-items-center">
-                            <div class="col-sm-8">
-                                <div  style="width: 50rem;">
-                                    <div class="card-body">
-                                        <h:form>
-                                            <table align="center" >
-                                                <tr>
-                                                    <td>
-                                                        <h:commandLink  action="/InterfazPV?faces-redirect=true">
-                                                            <h:graphicImage value="imagenes/point-of-sale.png" style="width: 250px; height: 250px;"/>
-                                                        </h:commandLink>
-
-                                                    </td>
-                                                </tr>
-                                                <tr style="text-align: center;">
-                                                    <td>
-                                                        <h2 style="margin: 30px">#{msg['principal.pdv']}</h2>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </h:form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </f:view>
-
+                #{interfacesMB.noAuth()}
             </c:otherwise>
         </c:choose>
-                </h:body>
-                </html>
+
+
+    </h:body>
+</html>
 

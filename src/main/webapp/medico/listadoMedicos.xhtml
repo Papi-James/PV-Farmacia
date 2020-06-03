@@ -23,10 +23,10 @@
                         </h:form>
                     </div>
                 </div>
-                <form class="form-inline">
-                    <h5 class=" mr-sm-3" style="margin-top: 6px;">Usuario</h5>
-                    <a class="btn-outline-danger" href="#">#{msg['navbar.logout']}</a>
-                </form>
+                <h:form class="form-inline">
+                    <h5 class=" mr-sm-3" style="margin-top: 6px;">#{loginMB.UserName()}</h5>
+                    <h:commandButton class="btn-outline-danger" action="#{loginMB.logout()}" value="#{msg['navbar.logout']}"/>
+                </h:form>
             </div>
         </nav>
          </f:view>

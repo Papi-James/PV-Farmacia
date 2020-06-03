@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,7 +51,9 @@ public class LoginMB implements Serializable {
             }
             else
             {
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("UsuarioLogeado", dto.getEntidad());
+                HttpSession s = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                s.setAttribute("nombreUsuario",  dto.getEntidad().getNombreUsuario());
+                s.setAttribute("tipoUsuario",  dto.getEntidad().getTipoUsuario());
                 return preparePrincipal();
             }
             
@@ -67,10 +70,26 @@ public class LoginMB implements Serializable {
     }
     
     public String UserName(){
-       dto.setEntidad((Usuario)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UsuarioLogeado"));
-       if(dto!=null)
-       return dto.getEntidad().getNombreUsuario();
+       HttpSession s = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+       String us = s.getAttribute("nombreUsuario").toString();
+       if(us!=null)
+       return us;
        else
            return "null";
+    }
+    
+    public boolean isAdministrador(){
+       int userType = (int)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tipoUsuario");
+       if(userType==1)
+        return true;
+       else
+           return false;
+    }
+    
+    public String logout()
+    {
+        HttpSession s = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        s.invalidate();
+        return "/index?faces-redirect=true";
     }
 }

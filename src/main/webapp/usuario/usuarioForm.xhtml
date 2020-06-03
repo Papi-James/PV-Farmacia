@@ -13,18 +13,18 @@
             <div class="container">
                 <f:view>
                     <h:form class="form-inline">
-                <h:commandLink class="navbar-brand" action="#{usuarioMB.back()}" value="#{msg['usuario.titulo']}"/>
+                        <h:commandLink class="navbar-brand" action="#{usuarioMB.back()}" value="#{msg['usuario.titulo']}"/>
 
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.prepareInterfazAdmin()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
-                    </div>
-                </div>
-                </h:form>
-                <form class="form-inline">
-                    <h5 class=" mr-sm-3" style="margin-top: 6px;">Usuario</h5>
-                    <a class="btn-outline-danger" href="#">#{msg['navbar.logout']}</a>
-                </form>
+                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                                <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.prepareInterfazAdmin()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
+                            </div>
+                        </div>
+                    </h:form>
+                    <h:form class="form-inline" id="frmNav2" >
+                        <h5 class=" mr-sm-3" style="margin-top: 6px;">#{loginMB.UserName()}</h5>
+                        <h:commandButton class="btn-outline-danger" action="#{loginMB.logout()}" value="#{msg['navbar.logout']}"/>
+                    </h:form>
                 </f:view>
             </div>
         </nav>
@@ -56,7 +56,7 @@
 
                                     <h:outputText value="#{msg['l.u.correo']}" class="col-sm-2 col-form-label"/>
                                     <h:inputText id="formCorreo" value="#{usuarioMB.dto.entidad.email}" class="form-control"/>
-                                    
+
                                     <h:outputText value="#{msg['l.u.nomUsuario']}" class="col-sm-2 col-form-label"/>
                                     <h:inputText id="formNombreUsuario" value="#{usuarioMB.dto.entidad.nombreUsuario}" class="form-control"/>
 

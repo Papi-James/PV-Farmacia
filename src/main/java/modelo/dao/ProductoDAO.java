@@ -1,6 +1,7 @@
 package modelo.dao;
 
 
+import entidades.Producto;
 import java.math.BigDecimal;
 import java.util.List;
 import modelo.dto.ProductoDTO;
@@ -68,6 +69,24 @@ public class ProductoDAO {
         try{
         trans.begin();
         dto.setEntidad(s.get(dto.getEntidad().getClass(),dto.getEntidad().getIdProducto() ));
+        trans.commit();
+        }catch(HibernateException he)
+        {
+            if(trans!=null && trans.isActive())
+                trans.rollback();
+        }
+        return dto;
+    }
+    
+     public ProductoDTO readByBarras(ProductoDTO dto){
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = s.getTransaction();
+        List l = null;
+        try{
+        trans.begin();
+        Query q = s.createQuery("from Producto p where p.codBarras='"+dto.getEntidad().getCodBarras()+"'");
+        l=q.list();
+        dto.setEntidad((Producto)l.get(0));
         trans.commit();
         }catch(HibernateException he)
         {

@@ -26,6 +26,10 @@ public class InterfacesMB implements Serializable {
         return "/InterfazAdmin?faces-redirect=true";
     }
     
+    public String preparePrincipal(){
+        return "/Principal?faces-redirect=true";
+    }
+    
     public void noAuth(){
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/faces/errores/NoUserDenied.xhtml");

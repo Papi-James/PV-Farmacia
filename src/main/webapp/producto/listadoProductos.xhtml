@@ -63,7 +63,7 @@
                                                     <f:facet name="header">
                                                         <h:outputText value="#{msg['l.p.categoria']}"/>
                                                     </f:facet>
-                                                    <h:outputText value="#{dto.idCategoria}"/>
+                                                    <h:outputText value="#{categoriaMB.buscarNombreCategoria(dto.idCategoria)}" />
                                                 </h:column>
                                                 <h:column>
                                                     <f:facet name="header">

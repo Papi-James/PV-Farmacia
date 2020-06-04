@@ -131,7 +131,7 @@ public class ProductoDAO {
         dto.getEntidad().setNombreComercial("Aspirina");
         dto.getEntidad().setSustancia("Butilhioscina 10mg");
         dto.getEntidad().setFraccion("IV");
-        dto.getEntidad().setClaveSat(1234);
+        dto.getEntidad().setClaveSat("1234");
         dto.getEntidad().setReceta(false);
         
         

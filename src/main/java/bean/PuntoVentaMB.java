@@ -12,7 +12,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,6 +42,7 @@ public class PuntoVentaMB implements Serializable{
     private DetalleVentaDTO dtoVenta;
     private int multiplicador=1;
     private int contadorProductos=1;
+    int idEnCanasta;
     
     
     @PostConstruct
@@ -48,10 +50,10 @@ public class PuntoVentaMB implements Serializable{
         canasta = new ArrayList<>();
     }
 
-    public void agregaALista()
+    public void agregaALista(boolean bandera)
     {
         int indiceEnLista=-1;
-        if(analizarCodigo())
+        if(bandera)
         {
             indiceEnLista=verificarExistenciaEnLista(true);
             if(indiceEnLista==-1)
@@ -66,7 +68,7 @@ public class PuntoVentaMB implements Serializable{
         
         if(indiceEnLista==-1)
         {
-        if(dtoProducto.getEntidad().getIdProducto()>0)
+        if(dtoProducto.getEntidad()!=null)
         {
             Venta_Producto itemCanasta = new Venta_Producto();
             itemCanasta.setId(contadorProductos);
@@ -111,22 +113,29 @@ public class PuntoVentaMB implements Serializable{
         dtoProducto=dao.read(dtoProducto);
     }
     
-    public boolean analizarCodigo(){
-        if(Codigo.contains("*"))
+    public void analizarCodigo(){
+        if(Codigo.contains("t") || Codigo.contains("T"))
         {
-            String partes[]=Codigo.split("\\*");
-            multiplicador=Integer.parseInt(partes[0]);
-            Codigo=partes[1];
-        }
-        
-        if(Codigo.length()>6)
-        {
-            ///Codigo de producto
-            return true;
+            realizarVenta();
         }
         else
-        {   //codigo de barras
-            return false;
+        {
+            if(Codigo.contains("*"))
+            {
+                String partes[]=Codigo.split("\\*");
+                multiplicador=Integer.parseInt(partes[0]);
+                Codigo=partes[1];
+            }
+        
+            if(Codigo.length()>6)
+            {
+                ///Codigo de producto
+                agregaALista(true);
+            }
+            else
+            {   //codigo de barras
+                agregaALista(false);
+            }
         }
     }
     
@@ -159,7 +168,20 @@ public class PuntoVentaMB implements Serializable{
     
     public void borrarItem()
     {
+        for(int i=0; i<canasta.size();i++)
+        {
+            if(canasta.get(i).getId()==idEnCanasta)
+            {
+                Total = Total.subtract(canasta.get(i).getSubtotal());
+                canasta.remove(i);
+            }
+        }
         
+    }
+    
+    public void seleccionarItem(){
+        String claveSel = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("claveSel");
+        idEnCanasta = Integer.parseInt(claveSel);
     }
     
     public void realizarVenta()

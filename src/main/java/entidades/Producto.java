@@ -35,7 +35,7 @@ public class Producto implements Serializable{
     private String nombreComercial;
     private String sustancia;
     private String fraccion;
-    private int claveSat;
+    private String claveSat;
     private boolean receta;
     private String codBarras;
     private BigDecimal precio;

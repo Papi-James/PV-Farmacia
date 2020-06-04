@@ -40,7 +40,7 @@
                 <div class="card-body" style="font-size: small;">
                     <f:view>
                         <h:form id="frmVenta">
-                            <p:remoteCommand name="test" actionListener="#{puntoVentaMB.agregaALista()}" update="listaCanasta cantidadtotal txtcodigo"/>
+                            <p:remoteCommand name="test" actionListener="#{puntoVentaMB.analizarCodigo()}" update="listaCanasta cantidadtotal txtcodigo"/>
                             <div style="margin-bottom: 15px;" class="navbar">
                                 <div class="form-inline">
                                 <h:outputText value="Código: " class=" col-form-label h5" style="margin-right: 10px;"/>
@@ -110,7 +110,7 @@
                                     <f:facet name="header" >
                                         <h:outputText value="#{msg['l.acciones']}"/>
                                     </f:facet>
-                                    <h:commandLink action="#{puntoVentaMB.delete()}" actionListener="#{productoMB.seleccionarProducto()}" style="margin-left: 10px;">
+                                    <h:commandLink action="#{puntoVentaMB.borrarItem()}" actionListener="#{puntoVentaMB.seleccionarItem()}" style="margin-left: 10px;">
                                         <f:param name="claveSel" value="#{dto.id}"/>
                                         <h:graphicImage value="/imagenes/trash.png" height="35px" width="35px" alt="Eliminar" />
                                     </h:commandLink>

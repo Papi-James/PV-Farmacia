@@ -5,13 +5,17 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import javax.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import modelo.dao.UsuarioDAO;
 import modelo.dto.UsuarioDTO;
+import utilerias.EnvioCorreo;
 
 /**
  *
@@ -62,8 +66,18 @@ public class UsuarioMB extends BaseBean implements Serializable {
     public String add()
     {
         Boolean valido = validate();
-        if(valido){
+        if (valido) {
             dao.create(dto);
+            EnvioCorreo c = new EnvioCorreo();
+
+            String correo = dto.getEntidad().getEmail();
+            String asunto = "Registro prueba";
+            String conTexto = "El registro del usuario fue realizado exitosamente";
+            try {
+                c.enviarEmail(correo, asunto, conTexto);
+            } catch (MessagingException ex) {
+                Logger.getLogger(EnvioCorreo.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if(valido)
             {
                 return prepareIndex();
@@ -94,6 +108,7 @@ public class UsuarioMB extends BaseBean implements Serializable {
         dao.delete(dto);      
         return prepareIndex();
     }
+    
     
     public void seleccionarUsuario(){
         String claveSel = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("claveSel");

@@ -1,12 +1,121 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>#{msg['entradas.titulo']}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <h:outputStylesheet library="css" name="EstilosPersonales.css"/>
     </h:head>
-    <h:body>
-        Hello from Facelets
+
+    <h:body class="fondoColoresFarmacia">
+        <c:choose>
+            <c:when test="#{loginMB.loged}">
+                <c:choose>
+                    <c:when test="#{loginMB.administrador}">
+                        <f:view>
+                            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+                                <div class="container">
+                                    <a class="navbar-brand" href="#">#{msg['entradas.titulo']}</a>
+
+                                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                                        <div class="navbar-nav">
+                                            <h:form class="form-inline" id="frmNav" >
+                                                <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.prepareInterfazAdmin()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
+                                                <h:commandLink class="nav-item nav-link" action="#{EntradaMB.prepareAdd()}" value="#{msg['navbar.nuevo']}"/>
+                                                <h:commandLink class="nav-item nav-link" action="#" value="#{msg['navbar.reporte']}"/>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <h:form class="form-inline">
+                                        <h5 class=" mr-sm-3" style="margin-top: 6px;">#{loginMB.UserName()}</h5>
+                                        <h:commandButton class="btn-outline-danger" action="#{loginMB.logout()}" value="#{msg['navbar.logout']}"/>
+                                    </h:form>
+                                </div>
+                            </nav>
+                        </f:view>
+
+
+
+                        <div style="margin-top: 40px; margin-left: 15px; margin-right: 15px;" >
+                            <div class="card mb-3">
+
+                                <div class="card-body" style="font-size: small;">
+                                    <f:view>
+                                        <h:form id="frmCategoria">
+                                            <h:dataTable value="#{entradaMB.listaDeEntradas}" var="dto" class="table table-hover" >
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="ID"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.idEntrada}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.e.idUsuario']}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.idUsuario}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.e.numfactura']}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.numFactura}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.e.proveedor']}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.proveedor}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.e.total']}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.total}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msg['l.e.fecha']}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{dto.fecha}"/>
+                                                </h:column>
+
+
+                                                <h:column >
+                                                    <f:facet name="header" >
+                                                        <h:outputText value="#{msg['l.acciones']}"/>
+                                                    </f:facet>
+                                                    <h:commandLink action="#{entradaMB.prepareUpdate()}" actionListener="#{entradaMB.seleccionarEntrada()}">
+                                                        <f:param name="claveSel" value="#{dto.idEntrada}"/>
+                                                        <h:graphicImage value="/imagenes/update.png" height="35px" width="35px" alt="Actualizar" />
+                                                    </h:commandLink>
+                                                    <h:commandLink action="#{entradaMB.delete()}" actionListener="#{entradaMB.seleccionarEntrada()}" style="margin-left: 10px;">
+                                                        <f:param name="claveSel" value="#{dto.idEntrada}"/>
+                                                        <h:graphicImage value="/imagenes/trash.png" height="35px" width="35px" alt="Eliminar" />
+                                                    </h:commandLink>
+                                                </h:column>
+
+
+                                            </h:dataTable>
+                                        </h:form>
+                                    </f:view>
+                                </div>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        #{interfacesMB.noAdmin()}
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
+            <c:otherwise>
+                #{interfacesMB.noAuth()}
+            </c:otherwise>
+        </c:choose>
+
     </h:body>
 </html>
-

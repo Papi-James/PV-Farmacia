@@ -1,5 +1,6 @@
 package modelo.dao;
 
+import entidades.Medico;
 import java.util.List;
 import modelo.dto.MedicoDTO;
 import org.hibernate.HibernateException;
@@ -66,6 +67,24 @@ public class MedicoDAO {
         try{
         trans.begin();
         dto.setEntidad(s.get(dto.getEntidad().getClass(),dto.getEntidad().getIdMedico() ));
+        trans.commit();
+        }catch(HibernateException he)
+        {
+            if(trans!=null && trans.isActive())
+                trans.rollback();
+        }
+        return dto;
+    }
+    
+    public MedicoDTO readByCedula(MedicoDTO dto){
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = s.getTransaction();
+        List l = null;
+        try{
+        trans.begin();
+        Query q = s.createQuery("from Medico m where cedula='"+dto.getEntidad().getCedula()+"'");
+        l=q.list();
+        dto.setEntidad((Medico)l.get(0));
         trans.commit();
         }catch(HibernateException he)
         {

@@ -18,9 +18,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import modelo.dao.ProductoDAO;
+import modelo.dao.MedicoDAO;
 import modelo.dto.DetalleVentaDTO;
+import modelo.dto.MedicoDTO;
 import modelo.dto.ProductoDTO;
 import utilerias.Venta_Producto;
+import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -39,14 +42,18 @@ public class PuntoVentaMB implements Serializable{
     private String Codigo;
     private ProductoDAO dao = new ProductoDAO();
     private ProductoDTO dtoProducto;
+    private MedicoDTO dtoMedico;
+    private MedicoDAO daoMedico = new MedicoDAO();
     private DetalleVentaDTO dtoVenta;
     private int multiplicador=1;
     private int contadorProductos=1;
-    int idEnCanasta;
-    
+    private int idEnCanasta;
+    private boolean banderaMedicoExistente;
+        
     
     @PostConstruct
     public void init(){
+        dtoMedico= new MedicoDTO();
         canasta = new ArrayList<>();
     }
 
@@ -70,6 +77,37 @@ public class PuntoVentaMB implements Serializable{
         {
         if(dtoProducto.getEntidad()!=null)
         {
+            if(dtoProducto.getEntidad().isReceta())
+            {
+                dtoMedico= new MedicoDTO();
+                PrimeFaces current = PrimeFaces.current();
+                current.executeScript("PF('DialogoMedico').show();");
+            }
+            else
+            {
+                MeterProductoNuevoCanasta(false);
+            }
+        }
+        else
+        {
+            PrimeFaces current = PrimeFaces.current();
+            current.executeScript("PF('DialNoRegistrado').show();");
+        }
+        }
+        else
+        {
+            int cantidadAnterior = canasta.get(indiceEnLista).getCantidad();
+            canasta.get(indiceEnLista).setCantidad(multiplicador+cantidadAnterior);
+            canasta.get(indiceEnLista).setSubtotal(canasta.get(indiceEnLista).getPrecio().multiply(new BigDecimal(cantidadAnterior+multiplicador)));
+            Total = canasta.get(indiceEnLista).getPrecio().multiply(new BigDecimal(multiplicador)).add(Total);
+            
+        }
+        
+        multiplicador=1;    
+        Codigo="";
+    }
+    
+    public void MeterProductoNuevoCanasta(boolean conMedico){
             Venta_Producto itemCanasta = new Venta_Producto();
             itemCanasta.setId(contadorProductos);
             itemCanasta.setIdProducto(dtoProducto.getEntidad().getIdProducto());
@@ -82,21 +120,23 @@ public class PuntoVentaMB implements Serializable{
             itemCanasta.setBarras(dtoProducto.getEntidad().getCodBarras());
             itemCanasta.setCantidad(multiplicador);
             itemCanasta.setSubtotal(dtoProducto.getEntidad().getPrecio().multiply(new BigDecimal(multiplicador)));
+            
+            if(conMedico)
+                itemCanasta.setIdMedico(1);
+            
             Total = itemCanasta.getSubtotal().add(Total);
             contadorProductos++;
             canasta.add(itemCanasta);
-        }
-        }
-        else
-        {
-            int cantidadAnterior = canasta.get(indiceEnLista).getCantidad();
-            canasta.get(indiceEnLista).setCantidad(multiplicador+cantidadAnterior);
-            canasta.get(indiceEnLista).setSubtotal(canasta.get(indiceEnLista).getPrecio().multiply(new BigDecimal(cantidadAnterior+multiplicador)));
-            Total = canasta.get(indiceEnLista).getPrecio().multiply(new BigDecimal(multiplicador)).add(Total);
-            
-        }
-        multiplicador=1;    
-        Codigo="";
+    }
+    
+    public void buscarMedico()
+    {
+        dtoMedico = daoMedico.readByCedula(dtoMedico);
+    }
+    
+    public void limpiarMedico()
+    {
+        dtoMedico= new MedicoDTO();
     }
     
     public void buscarProductoxBarras(){
@@ -186,6 +226,8 @@ public class PuntoVentaMB implements Serializable{
     
     public void realizarVenta()
     {
+        
+        
         Total=new BigDecimal(0);
         canasta.clear();
         Codigo="";

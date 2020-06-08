@@ -33,6 +33,26 @@ public class DetalleVentaDAO {
         }
     }
     
+    public void createSinMedico(DetalleVentaDTO dto){
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = s.getTransaction();
+        
+        try{
+        trans.begin();
+        Query query = s.createSQLQuery("INSERT INTO detalleventa (idproducto,idventa,cantidad,precio) VALUES (:v1,:v2,:v3,:v4)");
+        query.setParameter("v1", dto.getEntidad().getIdProducto());
+        query.setParameter("v2",dto.getEntidad().getIdVenta());
+        query.setParameter("v3",dto.getEntidad().getCantidad());
+        query.setParameter("v4",dto.getEntidad().getPrecio());
+         query.executeUpdate();
+        trans.commit();
+        }catch(HibernateException he)
+        {
+            if(trans!=null && trans.isActive())
+                trans.rollback();
+        }
+    }
+    
     public void update(DetalleVentaDTO dto){
         Session s = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction trans = s.getTransaction();

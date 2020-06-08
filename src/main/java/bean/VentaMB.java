@@ -56,7 +56,7 @@ public class VentaMB extends BaseBean implements Serializable {
     
     public String prepareIndex(){
         init();
-        return "/venta/listadoVentas?faces-redirect=true";
+        return "/Venta/listadoVentas?faces-redirect=true";
     }
     
     public String back(){

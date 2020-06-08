@@ -30,6 +30,22 @@ public class MedicoDAO {
         }
     }
     
+    public int createConRetorno(MedicoDTO dto){
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = s.getTransaction();
+        int idGenerado=-1;
+        try{
+        trans.begin();
+        idGenerado=(int)s.save(dto.getEntidad());
+        trans.commit();
+        }catch(HibernateException he)
+        {
+            if(trans!=null && trans.isActive())
+                trans.rollback();
+        }
+        return idGenerado;
+    }
+    
     public void update(MedicoDTO dto){
         Session s = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction trans = s.getTransaction();
@@ -84,6 +100,8 @@ public class MedicoDAO {
         trans.begin();
         Query q = s.createQuery("from Medico m where cedula='"+dto.getEntidad().getCedula()+"'");
         l=q.list();
+        if(l.isEmpty())
+            return null;
         dto.setEntidad((Medico)l.get(0));
         trans.commit();
         }catch(HibernateException he)

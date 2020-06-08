@@ -7,21 +7,27 @@ package bean;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import modelo.dao.DetalleVentaDAO;
 import modelo.dao.ProductoDAO;
 import modelo.dao.MedicoDAO;
+import modelo.dao.VentaDAO;
 import modelo.dto.DetalleVentaDTO;
 import modelo.dto.MedicoDTO;
 import modelo.dto.ProductoDTO;
+import modelo.dto.VentaDTO;
 import utilerias.Venta_Producto;
 import org.primefaces.PrimeFaces;
 
@@ -41,19 +47,20 @@ public class PuntoVentaMB implements Serializable{
     private BigDecimal Total=new BigDecimal(0);
     private String Codigo;
     private ProductoDAO dao = new ProductoDAO();
+    private MedicoDAO daoMedico = new MedicoDAO();
     private ProductoDTO dtoProducto;
     private MedicoDTO dtoMedico;
-    private MedicoDAO daoMedico = new MedicoDAO();
-    private DetalleVentaDTO dtoVenta;
     private int multiplicador=1;
     private int contadorProductos=1;
     private int idEnCanasta;
     private boolean banderaMedicoExistente;
+    private boolean tipoVenta;
+    String mensajeExito="¡La venta se ha realizado exitosamente!";
         
     
     @PostConstruct
     public void init(){
-        dtoMedico= new MedicoDTO();
+        //dtoMedico= new MedicoDTO();
         canasta = new ArrayList<>();
     }
 
@@ -100,11 +107,11 @@ public class PuntoVentaMB implements Serializable{
             canasta.get(indiceEnLista).setCantidad(multiplicador+cantidadAnterior);
             canasta.get(indiceEnLista).setSubtotal(canasta.get(indiceEnLista).getPrecio().multiply(new BigDecimal(cantidadAnterior+multiplicador)));
             Total = canasta.get(indiceEnLista).getPrecio().multiply(new BigDecimal(multiplicador)).add(Total);
-            
+            multiplicador=1;    
+            Codigo="";
         }
         
-        multiplicador=1;    
-        Codigo="";
+        
     }
     
     public void MeterProductoNuevoCanasta(boolean conMedico){
@@ -122,21 +129,46 @@ public class PuntoVentaMB implements Serializable{
             itemCanasta.setSubtotal(dtoProducto.getEntidad().getPrecio().multiply(new BigDecimal(multiplicador)));
             
             if(conMedico)
-                itemCanasta.setIdMedico(1);
+            {
+                if(banderaMedicoExistente==false)
+                {
+                    int idUltimoMedico = daoMedico.createConRetorno(dtoMedico);
+                    itemCanasta.setIdMedico(idUltimoMedico);
+                }
+                else
+                {
+                    itemCanasta.setIdMedico(dtoMedico.getEntidad().getIdMedico());
+                }
+                
+            }
             
             Total = itemCanasta.getSubtotal().add(Total);
             contadorProductos++;
             canasta.add(itemCanasta);
+            multiplicador=1;    
+            Codigo="";
     }
     
     public void buscarMedico()
     {
         dtoMedico = daoMedico.readByCedula(dtoMedico);
+        if(dtoMedico==null)
+        {
+            System.out.println("No se encontro medico registrado");
+            dtoMedico=new MedicoDTO();
+            banderaMedicoExistente = false;
+        }
+        else
+        {
+            banderaMedicoExistente = true;
+        }
     }
     
     public void limpiarMedico()
     {
-        dtoMedico= new MedicoDTO();
+        dtoMedico= null;
+        multiplicador=1;
+        Codigo="";
     }
     
     public void buscarProductoxBarras(){
@@ -156,7 +188,7 @@ public class PuntoVentaMB implements Serializable{
     public void analizarCodigo(){
         if(Codigo.contains("t") || Codigo.contains("T"))
         {
-            realizarVenta();
+            prepareVenta();
         }
         else
         {
@@ -224,15 +256,67 @@ public class PuntoVentaMB implements Serializable{
         idEnCanasta = Integer.parseInt(claveSel);
     }
     
-    public void realizarVenta()
+    public void prepareVenta(){
+        if (dtoMedico!=null)
+        {
+            PrimeFaces current = PrimeFaces.current();
+            current.executeScript("PF('DialogoTipoVenta').show();");
+        }
+        else
+            realizarVenta(false);
+    }
+    
+    public void realizarVenta(boolean conAntibiotico)
     {
+        mensajeExito="¡La venta se ha realizado exitosamente!";
         
+        VentaDTO dtoVenta = new VentaDTO();
+        VentaDAO daoVenta = new VentaDAO();
+        HttpSession s = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        
+        dtoVenta.getEntidad().setIdUsuario(Integer.parseInt(s.getAttribute("idUsuario").toString()));
+        dtoVenta.getEntidad().setFecha(new Timestamp(new Date().getTime()));
+        dtoVenta.getEntidad().setTotal(Total);
+        
+        int idDeVentaCreada = daoVenta.createConRetorno(dtoVenta);
+        
+        DetalleVentaDTO dtoDVenta;
+        DetalleVentaDAO daoDVenta = new DetalleVentaDAO();
+        
+        for(int i=0; i<canasta.size();i++)
+        {
+            dtoDVenta = new DetalleVentaDTO();
+            
+            dtoDVenta.getEntidad().setIdVenta(idDeVentaCreada);
+            dtoDVenta.getEntidad().setIdProducto(canasta.get(i).getIdProducto());
+            dtoDVenta.getEntidad().setPrecio(canasta.get(i).getPrecio());
+            dtoDVenta.getEntidad().setCantidad(canasta.get(i).getCantidad());
+            if(conAntibiotico && canasta.get(i).isReceta() )
+            {
+                dtoDVenta.getEntidad().setIdMedico(dtoMedico.getEntidad().getIdMedico());
+                dtoDVenta.getEntidad().setTipoVenta(tipoVenta);
+                daoDVenta.create(dtoDVenta);
+            }
+            else
+            {
+                daoDVenta.createSinMedico(dtoDVenta);
+            }
+            
+        }
+        
+        if(conAntibiotico)
+            mensajeExito += "\n\nFolio: "+idDeVentaCreada;
+        
+        
+        PrimeFaces current = PrimeFaces.current();
+        current.executeScript("PF('DialExitoso').show();");
         
         Total=new BigDecimal(0);
         canasta.clear();
         Codigo="";
         multiplicador=1;
         contadorProductos=1;
+        dtoMedico=null;
     }
     
     

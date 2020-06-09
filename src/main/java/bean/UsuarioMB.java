@@ -111,6 +111,15 @@ public class UsuarioMB extends BaseBean implements Serializable {
         return tu.get(i-1);
     }
     
+    public String returnNombreUsuario(int i)
+    {
+        dto = new UsuarioDTO();
+        dto.getEntidad().setIdUsuario(i);
+        dto = dao.read(dto);
+        
+        return dto.getEntidad().getNombre()+" "+dto.getEntidad().getPaterno();
+    }
+    
     public String delete()
     {
         dao.delete(dto);      

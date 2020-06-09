@@ -1,5 +1,7 @@
 package modelo.dao;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import modelo.dto.VentaDTO;
 import org.hibernate.HibernateException;
@@ -98,6 +100,25 @@ public class VentaDAO {
         try{
         trans.begin();
         Query q = s.createQuery("from Venta v order by v.idVenta");
+        l=q.list();
+        trans.commit();
+        }catch(HibernateException he)
+        {
+            if(trans!=null && trans.isActive())
+                trans.rollback();
+        }
+        return l;
+    }
+    
+    public List readByDate(){
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = s.getTransaction();
+        List l = null;
+        Timestamp momentoActual = new Timestamp(new Date().getTime());
+        Date momentoInicio = new Date();
+        try{
+        trans.begin();
+        Query q = s.createQuery("from Venta v where fecha>='"+(momentoInicio.getYear()+1900)+"-"+(momentoInicio.getMonth()+1)+"-"+momentoInicio.getDate()+" 08:00:00' and fecha<='"+momentoActual+"'");
         l=q.list();
         trans.commit();
         }catch(HibernateException he)

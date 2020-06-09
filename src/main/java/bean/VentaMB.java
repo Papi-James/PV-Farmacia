@@ -7,10 +7,14 @@ package bean;
 
 import static bean.BaseBean.ACC_ACTUALIZAR;
 import static bean.BaseBean.ACC_CREAR;
+import entidades.Venta;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -35,18 +39,16 @@ public class VentaMB extends BaseBean implements Serializable {
 
     private VentaDAO dao = new VentaDAO();
     private VentaDTO dto;
-    private List<ProductoDTO> listaDeVentas;
+    private List<VentaDTO> listaDeVentas;
+    private int VentasHechasEnRango=0;
+    private BigDecimal totalEnRango=new BigDecimal(0);
+    private String fechainicio;
+    private Timestamp fechafinal;
     
     @PostConstruct
     public void init(){
         listaDeVentas = new ArrayList<>();
         listaDeVentas = dao.readAll();
-    }
-    
-    public String prepareAdd(){
-        dto= new VentaDTO();
-        setAccion(ACC_CREAR);
-        return "/venta/ventaForm?faces-redirect=true";
     }
     
     public String prepareUpdate(){
@@ -67,22 +69,7 @@ public class VentaMB extends BaseBean implements Serializable {
         boolean valido = true;
         return valido;
     }
-    
-    public String add()
-    {
-        Boolean valido = validate();
-        if(valido){
-            dao.create(dto);
-            if(valido)
-            {
-                return prepareIndex();
-            }
-            else
-                return prepareAdd();
-        }
-        return prepareAdd();
-    }
-    
+        
     public String update()
     {
         Boolean valido = validate();
@@ -98,10 +85,21 @@ public class VentaMB extends BaseBean implements Serializable {
         return prepareUpdate();
     }
     
-    public String delete()
+    public String prepareCC()
     {
-        dao.delete(dto);      
-        return prepareIndex();
+        List listaDeVentasRango = dao.readByDate();
+        VentasHechasEnRango = listaDeVentasRango.size();
+        
+        for(int i=0; i<listaDeVentasRango.size();i++)
+        {
+            totalEnRango = totalEnRango.add(((Venta)listaDeVentasRango.get(i)).getTotal());
+        }
+        
+        Date fechaaux= new Date();
+        fechainicio = (fechaaux.getYear()+1900)+"-"+(fechaaux.getMonth()+1)+"-"+fechaaux.getDate()+" 08:00:00"; 
+        fechafinal = new Timestamp(new Date().getTime());
+        
+        return "/InterfazCorte?faces-redirect=true";
     }
     
     public void seleccionarVenta(){

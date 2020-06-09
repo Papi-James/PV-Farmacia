@@ -44,13 +44,13 @@
                                     <f:facet name="header">
                                         <h:outputText value="ID"/>
                                     </f:facet>
-                                    <h:outputText value="#{dto.idProducto}"/>
+                                    <h:outputText value="#{dto.idVenta}"/>
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">
-                                        <h:outputText value="#{msg['l.v.idUsuario']}"/>
+                                        <h:outputText value="#{msg['l.v.usuario']}"/>
                                     </f:facet>
-                                    <h:outputText value="#{dto.idUsuario}"/>
+                                    <h:outputText value="#{usuarioMB.returnNombreUsuario(dto.idUsuario)}"/>
                                 </h:column>
                                  <h:column>
                                     <f:facet name="header">
@@ -62,20 +62,20 @@
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['l.v.total']}"/>
                                     </f:facet>
-                                    <h:outputText value="#{dto.total}"/>
+                                    <h:outputText value="$ #{dto.total}"/>
                                 </h:column>
    
                                 <h:column >
                                     <f:facet name="header" >
                                         <h:outputText value="#{msg['l.acciones']}"/>
                                     </f:facet>
-                                    <h:commandLink action="#{ventaMB.prepareUpdate()}" actionListener="#{ventaMB.seleccionarVenta()}">
+                                    <h:commandLink action="#{ventaMB.prepareDet()}" actionListener="#{ventaMB.seleccionarVenta()}">
                                         <f:param name="claveSel" value="#{dto.idVenta}"/>
                                         <h:graphicImage value="/imagenes/update.png" height="35px" width="35px" alt="Actualizar" />
                                     </h:commandLink>
-                                    <h:commandLink action="#{ventaMB.delete()}" actionListener="#{ventaMB.seleccionarVenta()}" style="margin-left: 10px;">
+                                    <h:commandLink action="#{ventaMB.prepareUpdate()}" actionListener="#{ventaMB.seleccionarVenta()}">
                                         <f:param name="claveSel" value="#{dto.idVenta}"/>
-                                        <h:graphicImage value="/imagenes/trash.png" height="35px" width="35px" alt="Eliminar" />
+                                        <h:graphicImage value="/imagenes/update.png" height="35px" width="35px" alt="Actualizar" />
                                     </h:commandLink>
                                 </h:column>
 

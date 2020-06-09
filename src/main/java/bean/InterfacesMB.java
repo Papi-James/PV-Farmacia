@@ -30,6 +30,14 @@ public class InterfacesMB implements Serializable {
         return "/Principal?faces-redirect=true";
     }
     
+    public String prepareCC(){
+        return "/InterfazCorte?faces-redirect=true";
+    }
+    
+    public String prepareBuscadorProductos(){
+        return "/producto/busquedaProducto?faces-redirect=true";
+    }
+    
     public void noAuth(){
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/faces/errores/NoUserDenied.xhtml");

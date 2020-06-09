@@ -39,6 +39,8 @@
                                 <div class="navbar-nav">
                                     <h:form class="form-inline" id="frmNav" >
                                         <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.preparePrincipal()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
+                                        <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.preparePrincipal()}">#{msg['pv.buscar']} <span class="sr-only">(current)</span></h:commandLink>
+                                        <h:commandLink class="nav-item nav-link active alert-warning" action="#{interfacesMB.preparePrincipal()}">#{msg['pv.corte']} <span class="sr-only">(current)</span></h:commandLink>
                                     </h:form>
                                 </div>
                             </div>
@@ -57,13 +59,13 @@
 
                         <div class="card-body" style="font-size: small;">
                             <f:view>
-                                <p:dialog header="Producto no registrado" widgetVar="DialNoRegistrado" minHeight="40" showEffect="fade" responsive="true" onShow="delayNF();" onHide="stopDelay();">
-                                    <h:outputText value="¡No se encontró el producto seleccionado!"/>
+                                <p:dialog header="#{msg['pv.404']}" widgetVar="DialNoRegistrado" minHeight="40" showEffect="fade" responsive="true" onShow="delayNF();" onHide="stopDelay();">
+                                    <h:outputText value="#{msg['pv.404Det']}"/>
                                 </p:dialog>
-                                <p:dialog header="Venta exitosa" widgetVar="DialExitoso" minHeight="40" showEffect="fade" responsive="true" >
+                                <p:dialog header="#{msg['pv.ventaExitosa']}" widgetVar="DialExitoso" minHeight="40" showEffect="fade" responsive="true" >
                                     <h:outputText value="#{puntoVentaMB.mensajeExito}" escape="false"/>
                                 </p:dialog>
-                                <p:dialog header="Antibiotico" widgetVar="DialogoMedico" minHeight="40" showEffect="fade" responsive="true">
+                                <p:dialog header="#{msg['pv.antibiotico']}" widgetVar="DialogoMedico" minHeight="40" showEffect="fade" responsive="true">
                                     <div>
                                         <h:form id="formMedico">
                                             <p:remoteCommand name="rellenarCampos" actionListener="#{puntoVentaMB.buscarMedico()}" update="nombreMedico maternoMedico paternoMedico direccionMedico"/>
@@ -87,24 +89,24 @@
                                                 <h:inputText id="direccionMedico" class="form-control" value="#{puntoVentaMB.dtoMedico.entidad.direccion}" />
                                             </h:panelGrid>
                                             <div align="center">
-                                                <h:commandButton class="btn btn-warning btn-lg" value="Cancelar" onclick="PF('DialogoMedico').hide();" style="margin-right: 20px;" action="#{puntoVentaMB.limpiarMedico()}" />
-                                                <h:commandButton class="btn btn-success btn-lg" value="Aceptar" action="#{puntoVentaMB.MeterProductoNuevoCanasta(true)}" />
+                                                <h:commandButton class="btn btn-warning btn-lg" value="#{msg['pv.cancelar']}" onclick="PF('DialogoMedico').hide();" style="margin-right: 20px;" action="#{puntoVentaMB.limpiarMedico()}" />
+                                                <h:commandButton class="btn btn-success btn-lg" value="#{msg['pv.aceptar']}" action="#{puntoVentaMB.MeterProductoNuevoCanasta(true)}" />
                                             </div>
                                         </h:form>
                                     </div>
                                 </p:dialog>
 
 
-                                <p:dialog header="Tipo Venta" widgetVar="DialogoTipoVenta" minHeight="40" showEffect="fade" responsive="true">
+                                <p:dialog header="#{msg['pv.tipoventa']}" widgetVar="DialogoTipoVenta" minHeight="40" showEffect="fade" responsive="true">
                                     <div>
                                         <h:form id="formTV">
-                                            <h:outputText value="Por favor seleccione el tipo de venta" escape="false" />
+                                            <h:outputText value="#{msg['pv.tipoVentaDet']}" escape="false" />
                                             <div align="center">
                                                 <h:selectOneMenu id="somtv" value="#{puntoVentaMB.tipoVenta}" class="form-control" style="margin-top: 20px;">
-                                                    <f:selectItem itemValue="true" itemLabel="TOTAL"/>
-                                                    <f:selectItem itemValue="false" itemLabel="PARCIAL"/>
+                                                    <f:selectItem itemValue="true" itemLabel="#{msg['pv.total']}"/>
+                                                    <f:selectItem itemValue="false" itemLabel="#{msg['pv.parcial']}"/>
                                                 </h:selectOneMenu>
-                                                <h:commandButton class="btn btn-success btn-lg" value="Aceptar" onclick="PF('DialogoTipoVenta').hide();" action="#{puntoVentaMB.realizarVenta(true)}" style="margin-top: 20px;" />
+                                                <h:commandButton class="btn btn-success btn-lg" value="#{msg['pv.aceptar']}" onclick="PF('DialogoTipoVenta').hide();" action="#{puntoVentaMB.realizarVenta(true)}" style="margin-top: 20px;" />
                                             </div>
                                         </h:form>
                                     </div>
@@ -116,7 +118,7 @@
                                     <p:remoteCommand name="test" actionListener="#{puntoVentaMB.analizarCodigo()}" update="listaCanasta cantidadtotal txtcodigo"/>
                                     <div style="margin-bottom: 15px;" class="navbar">
                                         <div class="form-inline">
-                                            <h:outputText value="Código: " class=" col-form-label h5" style="margin-right: 10px;"/>
+                                            <h:outputText value="#{msg['pv.codigo']}: " class=" col-form-label h5" style="margin-right: 10px;"/>
                                             <h:inputText id="txtcodigo" value="#{puntoVentaMB.codigo}" onkeypress="if (event.keyCode == 13) {
                                                         test();
                                                         return false;
@@ -124,7 +126,7 @@
                                         </div>
                                         <div class="form-inline">
                                             <h:outputText id="cantidadtotal" class="h5" value="TOTAL: $ #{puntoVentaMB.total}" style="margin-right:30px;"/>
-                                            <h:commandButton class="btn btn-success btn-lg" value="Venta" action="#{puntoVentaMB.prepareVenta()}" />
+                                            <h:commandButton class="btn btn-success btn-lg" value="#{msg['pv.venta']}" action="#{puntoVentaMB.prepareVenta()}" />
                                         </div>
                                     </div>
                                     <h:dataTable id="listaCanasta" value="#{puntoVentaMB.canasta}" var="dto" class="table table-hover" >

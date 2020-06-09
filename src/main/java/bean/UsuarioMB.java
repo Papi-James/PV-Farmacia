@@ -31,11 +31,15 @@ public class UsuarioMB extends BaseBean implements Serializable {
     private UsuarioDAO dao = new UsuarioDAO();
     private UsuarioDTO dto;
     private List<UsuarioDTO> listaDeUsuarios;
+    private List<String> tu;
     
     @PostConstruct
     public void init(){
         listaDeUsuarios = new ArrayList<>();
         listaDeUsuarios = dao.readAll();
+        tu = new ArrayList<>();
+        tu.add("Administrador");
+        tu.add("Cajero");
     }
     
     public String prepareAdd(){
@@ -101,6 +105,10 @@ public class UsuarioMB extends BaseBean implements Serializable {
                 return prepareUpdate();
         }
         return prepareUpdate();
+    }
+    
+    public String returnTipoUsuario(int i){
+        return tu.get(i-1);
     }
     
     public String delete()

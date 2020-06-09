@@ -289,6 +289,16 @@ public class PuntoVentaMB implements Serializable{
             
             dtoDVenta.getEntidad().setIdVenta(idDeVentaCreada);
             dtoDVenta.getEntidad().setIdProducto(canasta.get(i).getIdProducto());
+            
+            dtoProducto.getEntidad().setIdProducto(canasta.get(i).getIdProducto());
+            dtoProducto = dao.read(dtoProducto);
+            int nuevoStock=dtoProducto.getEntidad().getExistencia()-canasta.get(i).getCantidad();
+            if(nuevoStock<0)
+                nuevoStock=0;
+            
+            dtoProducto.getEntidad().setExistencia(nuevoStock);
+            dao.update(dtoProducto);
+            
             dtoDVenta.getEntidad().setPrecio(canasta.get(i).getPrecio());
             dtoDVenta.getEntidad().setCantidad(canasta.get(i).getCantidad());
             if(conAntibiotico && canasta.get(i).isReceta() )

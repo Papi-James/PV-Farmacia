@@ -20,7 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
-import utilerias.UtileriaReportes;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.engine.spi.SessionImplementor;
+import utilerias.HibernateUtil;
 
 
 @WebServlet(name = "ReportePDF", urlPatterns = {"/medico/reportesservlet", "/categoria/reportesservlet", "/usuario/reportesservlet", "/Venta/reportesservlet", "/Entrada/reportesservlet", "/Detalle/reportesservlet", "/Producto/reportesservlet", "/reportesservlet"})
@@ -117,12 +120,16 @@ public class reportesservlet extends HttpServlet {
     }// </editor-fold>
 
     public void reporteMedicos(HttpServletRequest request, HttpServletResponse response) throws SQLException, JRException {
-        UtileriaReportes dao = new UtileriaReportes();
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        SessionImplementor implementor = (SessionImplementor)s;
+        Transaction trans = s.getTransaction();
         try {
             try (ServletOutputStream sos = response.getOutputStream()) {
                 File reporte = new File(getServletConfig().getServletContext().getRealPath("/reportes/ListaMedicos.jasper"));
                 byte[] bytes;
-                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,dao.conecta());
+                trans.begin();
+                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,implementor.connection());
+                trans.commit();
                 response.setContentType("application/pdf");
                 response.setContentLength(bytes.length);
                 sos.write(bytes, 0, bytes.length);
@@ -134,12 +141,16 @@ public class reportesservlet extends HttpServlet {
     }
 
     private void reporteVentasG(HttpServletRequest request, HttpServletResponse response) throws SQLException, JRException {
-         UtileriaReportes dao = new UtileriaReportes();
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        SessionImplementor implementor = (SessionImplementor)s;
+        Transaction trans = s.getTransaction();
         try {
             try (ServletOutputStream sos = response.getOutputStream()) {
                 File reporte = new File(getServletConfig().getServletContext().getRealPath("/reportes/GeneralVentas.jasper"));
                 byte[] bytes;
-                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,dao.conecta());
+                trans.begin();
+                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,implementor.connection());
+                trans.commit();
                 response.setContentType("application/pdf");
                 response.setContentLength(bytes.length);
                 sos.write(bytes, 0, bytes.length);
@@ -151,12 +162,16 @@ public class reportesservlet extends HttpServlet {
     }
 
     private void reporteProductosE(HttpServletRequest request, HttpServletResponse response) throws SQLException, JRException {
-         UtileriaReportes dao = new UtileriaReportes();
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        SessionImplementor implementor = (SessionImplementor)s;
+        Transaction trans = s.getTransaction();
         try {
             try (ServletOutputStream sos = response.getOutputStream()) {
                 File reporte = new File(getServletConfig().getServletContext().getRealPath("/reportes/ListaProductosE.jasper"));
                 byte[] bytes;
-                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,dao.conecta());
+                trans.begin();
+                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,implementor.connection());
+                trans.commit();
                 response.setContentType("application/pdf");
                 response.setContentLength(bytes.length);
                 sos.write(bytes, 0, bytes.length);
@@ -168,12 +183,16 @@ public class reportesservlet extends HttpServlet {
     }
 
     private void reporteProductosG(HttpServletRequest request, HttpServletResponse response) throws SQLException, JRException {
-         UtileriaReportes dao = new UtileriaReportes();
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        SessionImplementor implementor = (SessionImplementor)s;
+        Transaction trans = s.getTransaction();
         try {
             try (ServletOutputStream sos = response.getOutputStream()) {
                 File reporte = new File(getServletConfig().getServletContext().getRealPath("/reportes/ListaProductosGe.jasper"));
                 byte[] bytes;
-                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,dao.conecta());
+                trans.begin();
+                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,implementor.connection());
+                trans.commit();
                 response.setContentType("application/pdf");
                 response.setContentLength(bytes.length);
                 sos.write(bytes, 0, bytes.length);
@@ -185,12 +204,16 @@ public class reportesservlet extends HttpServlet {
     }
 
     private void reporteUsuarios(HttpServletRequest request, HttpServletResponse response) throws SQLException, JRException {
-        UtileriaReportes dao = new UtileriaReportes();
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        SessionImplementor implementor = (SessionImplementor)s;
+        Transaction trans = s.getTransaction();
         try {
             try (ServletOutputStream sos = response.getOutputStream()) {
                 File reporte = new File(getServletConfig().getServletContext().getRealPath("/reportes/ListaUsuarios.jasper"));
                 byte[] bytes;
-                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,dao.conecta());
+                trans.begin();
+                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,implementor.connection());
+                trans.commit();
                 response.setContentType("application/pdf");
                 response.setContentLength(bytes.length);
                 sos.write(bytes, 0, bytes.length);
@@ -202,12 +225,16 @@ public class reportesservlet extends HttpServlet {
     }
     
     private void reporteEntradas(HttpServletRequest request, HttpServletResponse response) throws SQLException, JRException {
-        UtileriaReportes dao = new UtileriaReportes();
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        SessionImplementor implementor = (SessionImplementor)s;
+        Transaction trans = s.getTransaction();
         try {
             try (ServletOutputStream sos = response.getOutputStream()) {
                 File reporte = new File(getServletConfig().getServletContext().getRealPath("reportes/GeneralEntradas.jasper"));
                 byte[] bytes;
-                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,dao.conecta());
+                trans.begin();
+                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,implementor.connection());
+                trans.commit();
                 response.setContentType("application/pdf");
                 response.setContentLength(bytes.length);
                 sos.write(bytes, 0, bytes.length);

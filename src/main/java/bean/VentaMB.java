@@ -7,6 +7,8 @@ package bean;
 
 import static bean.BaseBean.ACC_ACTUALIZAR;
 import static bean.BaseBean.ACC_CREAR;
+import entidades.DetalleEntrada;
+import entidades.DetalleVenta;
 import entidades.Venta;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -21,9 +23,14 @@ import javax.faces.context.FacesContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import modelo.dao.DetalleVentaDAO;
+import modelo.dao.ProductoDAO;
 import modelo.dao.VentaDAO;
+import modelo.dto.DetalleVentaDTO;
 import modelo.dto.ProductoDTO;
 import modelo.dto.VentaDTO;
+import org.primefaces.PrimeFaces;
+import utilerias.Venta_Producto;
 
 /**
  *
@@ -44,16 +51,14 @@ public class VentaMB extends BaseBean implements Serializable {
     private BigDecimal totalEnRango=new BigDecimal(0);
     private String fechainicio;
     private Timestamp fechafinal;
+    private List<Venta_Producto> listaDeDetalles;
+    
     
     @PostConstruct
     public void init(){
         listaDeVentas = new ArrayList<>();
         listaDeVentas = dao.readAll();
-    }
-    
-    public String prepareUpdate(){
-        setAccion(ACC_ACTUALIZAR);
-        return "/venta/ventaForm?faces-redirect=true";
+        listaDeDetalles = new ArrayList<>();
     }
     
     public String prepareIndex(){
@@ -68,21 +73,6 @@ public class VentaMB extends BaseBean implements Serializable {
     public boolean validate(){
         boolean valido = true;
         return valido;
-    }
-        
-    public String update()
-    {
-        Boolean valido = validate();
-        if(valido){
-            dao.update(dto);
-            if(valido)
-            {
-                return prepareIndex();
-            }
-            else
-                return prepareUpdate();
-        }
-        return prepareUpdate();
     }
     
     public String prepareCC()
@@ -113,6 +103,53 @@ public class VentaMB extends BaseBean implements Serializable {
         {
             e.printStackTrace();
         }
+    }
+    
+    public void detalleVenta(){
+        recuperarListaDeDetalles();
+        
+        PrimeFaces current = PrimeFaces.current();
+        current.executeScript("PF('DialogoDetalleVenta').show();");
+    }
+    
+    public void recuperarListaDeDetalles(){
+       
+        listaDeDetalles = new ArrayList<>();
+        
+       List<DetalleVenta> listaDetail = new ArrayList<>();
+       DetalleVentaDAO daoDVenta = new DetalleVentaDAO();
+       ProductoDAO  daoProducto = new ProductoDAO();
+       ProductoDTO  dtoProducto = new ProductoDTO();
+       Venta_Producto vp;
+       
+       listaDetail = daoDVenta.readByIdVenta(dto);
+
+       for(int i=0;i<listaDetail.size();i++)
+       {
+           vp = new Venta_Producto();
+           
+           dtoProducto.getEntidad().setIdProducto(listaDetail.get(i).getIdProducto());
+           dtoProducto = daoProducto.read(dtoProducto);
+           
+           vp.setCantidad(listaDetail.get(i).getCantidad());
+           vp.setMarca(dtoProducto.getEntidad().getMarca());
+           vp.setReceta(dtoProducto.getEntidad().isReceta());
+           vp.setSustancia(dtoProducto.getEntidad().getSustancia());
+           vp.setPresentacion(dtoProducto.getEntidad().getPresentacion());
+           vp.setPrecio(listaDetail.get(i).getPrecio());
+           vp.setNombre(dtoProducto.getEntidad().getNombre());
+           vp.setSubtotal(listaDetail.get(i).getPrecio().multiply(new BigDecimal(listaDetail.get(i).getCantidad())));
+           
+           if(dtoProducto.getEntidad().isReceta())
+           {
+               vp.setIdMedico(listaDetail.get(i).getIdMedico());
+           }
+           
+           listaDeDetalles.add(vp);
+           
+            
+       }
+       
     }
     
 }

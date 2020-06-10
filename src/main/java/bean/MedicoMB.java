@@ -31,6 +31,7 @@ public class MedicoMB extends BaseBean implements Serializable{
     public void init(){
         listaDeMedicos = new ArrayList<>();
         listaDeMedicos = dao.readAll();
+        listaDeMedicos.remove(0);
     }
     
     public String prepareAdd(){

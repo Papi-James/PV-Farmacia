@@ -309,7 +309,9 @@ public class PuntoVentaMB implements Serializable{
             }
             else
             {
-                daoDVenta.createSinMedico(dtoDVenta);
+                dtoDVenta.getEntidad().setIdMedico(0);
+                dtoDVenta.getEntidad().setTipoVenta(true);
+                daoDVenta.create(dtoDVenta);
             }
             
         }

@@ -37,7 +37,7 @@ public class EnvioCorreo {
             mensaje.setSubject(asunto);
             mensaje.setText(texto);
             Transport t = s.getTransport("smtp");
-            t.connect("xaviescom98@gmail.com","Gearsesrojo1");
+            t.connect("xaviescom98@gmail.com","xaviyjaime:v");
             t.sendMessage(mensaje,mensaje.getAllRecipients());
             t.close();
             

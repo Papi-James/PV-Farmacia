@@ -2,16 +2,20 @@ package bean;
 
 import static bean.BaseBean.ACC_ACTUALIZAR;
 import static bean.BaseBean.ACC_CREAR;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.Part;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +23,9 @@ import lombok.NoArgsConstructor;
 import modelo.dao.ProductoDAO;
 import modelo.dto.ProductoDTO;
 import org.apache.commons.io.IOUtils;
+import org.primefaces.PrimeFaces;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -34,12 +41,15 @@ public class ProductoMB extends BaseBean implements Serializable {
     private ProductoDAO dao = new ProductoDAO();
     private ProductoDTO dto;
     private Part img;
-    private List<ProductoDTO> listaDeProductos;
+    private List<ProductoDTO> listaDeProductos; 
+    String nombreBuscador="";
+    private List<ProductoDTO> listaCoincidente;
     
     @PostConstruct
     public void init(){
         listaDeProductos = new ArrayList<>();
         listaDeProductos = dao.readAll();
+        listaCoincidente = new ArrayList<>();
     }
     
     public String prepareAdd(){
@@ -123,6 +133,15 @@ public class ProductoMB extends BaseBean implements Serializable {
         {
             e.printStackTrace();
         }
+    }
+    
+    public void detalleProducto(){
+        PrimeFaces current = PrimeFaces.current();
+        current.executeScript("PF('DialogoDetalleProducto').show();");
+    }
+    
+    public void escuchaBusqueda(AjaxBehaviorEvent  event){
+        listaCoincidente = dao.readByNameOrSustance(nombreBuscador);
     }
     
 }

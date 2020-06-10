@@ -113,6 +113,23 @@ public class ProductoDAO {
         return l;
     }
     
+    public List readByNameOrSustance(String parametro){
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = s.getTransaction();
+        List l = null;
+        try{
+        trans.begin();
+        Query q = s.createQuery("from Producto p where lower(p.nombre) like lower('%"+parametro+"%') or lower(p.sustancia) like lower('%"+parametro+"%') order by p.idProducto");
+        l=q.list();
+        trans.commit();
+        }catch(HibernateException he)
+        {
+            if(trans!=null && trans.isActive())
+                trans.rollback();
+        }
+        return l;
+    }
+    
     public static void main(String[] args) {
         ProductoDAO dao = new ProductoDAO();
         ProductoDTO dto = new ProductoDTO();

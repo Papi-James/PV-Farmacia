@@ -114,13 +114,18 @@ public class CategoriaMB extends BaseBean implements Serializable{
         dto = new CategoriaDTO();
         dto.getEntidad().setIdCategoria(id);
         
+        System.out.println("Dentro de buscar nombre    ID RECIBIDO="+id);
+        
         try{
             dto = dao.read(dto);
         }catch(Exception e)
         {
             e.printStackTrace();
         }
-        return dto.getEntidad().getNombre();
+        if (dto.getEntidad()!=null)
+            return dto.getEntidad().getNombre();
+        else
+            return "Nada";
     }
     
 }

@@ -26,7 +26,7 @@
                                             <h:form class="form-inline" id="frmNav" >
                                                 <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.prepareInterfazAdmin()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
                                                 <h:commandLink class="nav-item nav-link" action="#{EntradaMB.prepareAdd()}" value="#{msg['navbar.nuevo']}"/>
-                                                <h:commandLink class="nav-item nav-link" action="#" value="#{msg['navbar.reporte']}"/>
+                                                <a class="nav-link " href="reportesservlet?accion=reporteEntradas" target="_blank"  >#{msg['reporte.entradasG']}</a>
                                             </h:form>
                                         </div>
                                     </div>

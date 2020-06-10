@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import modelo.dao.MedicoDAO;
 import modelo.dto.MedicoDTO;
-
 /**
  *
  * @author papitojaime
@@ -107,5 +106,5 @@ public class MedicoMB extends BaseBean implements Serializable{
             e.printStackTrace();
         }
     }
-    
+   
 }

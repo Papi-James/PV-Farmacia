@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/PV_Farmacia">   
+<ResourceLink  
+    name="jdbc/Farmacia"  
+    global="jdbc/Farmacia" 
+    type="javax.sql.DataSource"/>
+</Context>
+
+

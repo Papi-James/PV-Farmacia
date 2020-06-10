@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package utilerias;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import modelo.dao.CategoriaDAO;
+import javax.sql.DataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 /**
  *
@@ -21,23 +14,24 @@ public class UtileriaReportes {
     
         private Connection con;
     
-    public Connection conecta() {
-
-        String user = "postgres";
-        String password = "ContraChida";
-        Properties datos = new Properties();
-        datos.put("user", user);
-        datos.put("password", password);
-        String url = "jdbc:postgresql://localhost:5432/Farmacia";
-        String postgreSQLDriver = "org.postgresql.Driver";
-
+        BasicDataSource basicDataSource = new BasicDataSource();
+    
+    public Connection conecta() throws SQLException {
+        basicDataSource.setDriverClassName("org.postgresql.Driver");
+        basicDataSource.setUsername("postgres");
+        basicDataSource.setPassword("197098");
+        basicDataSource.setUrl("jdbc:postgresql://localhost:5432/Farmacia");
+        basicDataSource.setValidationQuery("select 1");
+        con = null;
         try {
-            Class.forName(postgreSQLDriver);
-            con = DriverManager.getConnection(url, datos);
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(UtileriaReportes.class.getName()).log(Level.SEVERE, null, ex);
+            DataSource dataSource = basicDataSource;
+            con = dataSource.getConnection();
+            System.out.println("Conexion establecida");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return con;
+
     }
     
 }

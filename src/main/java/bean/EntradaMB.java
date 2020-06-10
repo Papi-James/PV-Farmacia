@@ -56,7 +56,7 @@ public class EntradaMB extends BaseBean implements Serializable {
     
     public String prepareIndex(){
         init();
-        return "/entrada/listadoEntradas?faces-redirect=true";
+        return "/Entrada/listadoEntradas?faces-redirect=true";
     }
     
     public String back(){

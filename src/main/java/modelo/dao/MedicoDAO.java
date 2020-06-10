@@ -2,11 +2,8 @@ package modelo.dao;
 
 import entidades.Medico;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
-import javax.sql.DataSource;
 import modelo.dto.MedicoDTO;
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,9 +15,6 @@ import utilerias.HibernateUtil;
  * @author papitojaime
  */
 public class MedicoDAO {
-    
-    private Connection con;
-    BasicDataSource basicDataSource = new BasicDataSource();
     
     public void create(MedicoDTO dto){
         Session s = HibernateUtil.getSessionFactory().getCurrentSession();

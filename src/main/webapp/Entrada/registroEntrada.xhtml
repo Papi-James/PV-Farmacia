@@ -38,6 +38,7 @@
                             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                                 <div class="navbar-nav">
                                     <h:form class="form-inline" id="frmNav" >
+                                        <h:commandLink class="nav-item nav-link active" action="#{entradaMB.prepareIndex()}">#{msg['l.e.listaNom']} <span class="sr-only">(current)</span></h:commandLink>
                                         <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.preparePrincipal()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
                                     </h:form>
                                 </div>
@@ -70,8 +71,8 @@
                                     <h:outputText value="#{msg['l.p.sustancia']}:" class="font-weight-bold col-sm-2 col-form-label"/>
                                     <h:outputText value="#{entradaMB.producto.entidad.sustancia}" class="col-form-label"/>
 
-                                    <h:outputText value="#{msg['l.p.precio']}: $" class="font-weight-bold col-sm-2 col-form-label"/>
-                                    <h:inputText value="#{entradaMB.precio}" class="col-form-label"/>
+                                    <h:outputText value="#{msg['l.p.costo']}: $" class="font-weight-bold col-sm-2 col-form-label"/>
+                                    <h:inputText value="#{entradaMB.costo}" class="col-form-label"/>
 
                                     <h:outputText value="#{msg['pv.cantidad']}:" class=" font-weight-bold col-sm-2 col-form-label"/>
                                     <h:inputText value="#{entradaMB.cantidad}" class="col-form-label" />
@@ -84,6 +85,24 @@
                         </h:form>
                     </p:dialog>
                 
+                    <p:dialog header="#{msg['r.Datosfactura']}" widgetVar="DialogoFactura" minHeight="40" showEffect="fade" responsive="true">
+                        <h:form id="frmDatosFactura">
+                            <div>
+                                <h:panelGrid id="panelDatos" columns="2" class="form-group row" style="margin-top: 20px;">
+                                    <h:outputText value="#{msg['r.factura']}: " class="font-weight-bold col-sm-2 col-form-label"/>
+                                    <h:inputText value="#{entradaMB.factura}" class="col-form-label"/>
+
+                                    <h:outputText value="#{msg['r.prov']}:" class=" font-weight-bold col-sm-2 col-form-label"/>
+                                    <h:inputText value="#{entradaMB.proveedor}" class="col-form-label" />
+
+                                </h:panelGrid>
+                                <div align="center">
+                                    <h:commandButton class="btn btn-success btn-lg" action="#{entradaMB.registrarEntrada()}" value="#{msg['pv.aceptar']}" onclick="PF('DialogoFactura').hide(); " style="margin-right: 20px;" />
+                                </div>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                    
                 
                 <p:dialog header="#{msg['pv.404']}" widgetVar="DialNoRegistrado" minHeight="40" showEffect="fade" responsive="true" onShow="delayNF();" onHide="stopDelay();">
                                     <h:outputText value="#{msg['pv.404Det']}"/>
@@ -148,9 +167,9 @@
                                             <h:outputText value="#{dto.cantidad}"/>
                                         </h:column>
                                         <h:column >
-                                            <h:commandLink action="#{entradaMB.modificarEntrada()}" actionListener="#{entradaMB.seleccionarEntrada()}" style="margin-left: 10px;">
+                                            <h:commandLink action="#{entradaMB.eliminarRegistroEntrada()}" actionListener="#{entradaMB.seleccionarRegistroEntrada()}" style="margin-left: 10px;">
                                                 <f:param name="claveSel" value="#{dto.id}"/>
-                                                <h:graphicImage value="/imagenes/update.png" height="35px" width="35px" alt="Detalles" />
+                                                <h:graphicImage value="/imagenes/trash.png" height="35px" width="35px" alt="Detalles" />
                                             </h:commandLink>
                                         </h:column>
 

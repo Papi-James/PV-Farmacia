@@ -12,16 +12,20 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import modelo.dao.DetalleEntradaDAO;
 import modelo.dao.EntradaDAO;
 import modelo.dao.ProductoDAO;
+import modelo.dto.DetalleEntradaDTO;
 import modelo.dto.EntradaDTO;
 import modelo.dto.ProductoDTO;
 import org.primefaces.PrimeFaces;
@@ -45,10 +49,14 @@ public class EntradaMB extends BaseBean implements Serializable {
     private String Codigo = "";
     private List<Venta_Producto> listaParaEntrada;
     private ProductoDTO producto;
-    private String precio;
+    private String costo;
     private int cantidad;
     private int contador=0;
-    private List<Entrada_Producto> listaDeDetalles;
+    private List<Venta_Producto> listaDeDetalles;
+    private int idVP=0;
+    private String Factura="";
+    private String Proveedor="";
+    private BigDecimal total = new BigDecimal(0);
 
     @PostConstruct
     public void init() {
@@ -59,12 +67,12 @@ public class EntradaMB extends BaseBean implements Serializable {
 
     public String prepareIndex() {
         init();
-        return "/entrada/listadoEntradas?faces-redirect=true";
+        return "/Entrada/listadoEntradas?faces-redirect=true";
     }
     
     public String prepareAdd()
     {
-        return "/entrada/registroEntrada?faces-redirect=true";
+        return "/Entrada/registroEntrada?faces-redirect=true";
     }
 
     public String back() {
@@ -92,6 +100,12 @@ public class EntradaMB extends BaseBean implements Serializable {
             e.printStackTrace();
         }
     }
+    
+    public void seleccionarRegistroEntrada() {
+        String claveSel = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("claveSel");
+        
+        idVP = Integer.parseInt(claveSel);
+    }
 
     public void analizarCodigo() {
 
@@ -107,7 +121,7 @@ public class EntradaMB extends BaseBean implements Serializable {
         PrimeFaces current = PrimeFaces.current();
         current.executeScript("PF('DialogoDetalleEntrada').show();");
         
-        precio=producto.getEntidad().getPrecio()+"";
+        costo=producto.getEntidad().getCosto()+"";
         }
         else
         {
@@ -133,24 +147,81 @@ public class EntradaMB extends BaseBean implements Serializable {
         producto=daoP.read(producto);
     }
     
-    public void modificarEntrada(){}
+    public void eliminarRegistroEntrada(){
+        
+        total=total.subtract(new BigDecimal(listaParaEntrada.get(idVP).getCantidad()).multiply(listaParaEntrada.get(idVP).getPrecio()));
+        
+        listaParaEntrada.remove(idVP);
+    }
     
-    public void prepareEntrada(){}
+    public void prepareEntrada(){
+         PrimeFaces current = PrimeFaces.current();
+        current.executeScript("PF('DialogoFactura').show();");
+        
+    
+    }
+    
+    public void registrarEntrada(){
+        dto = new EntradaDTO();
+        dao = new EntradaDAO();
+        DetalleEntradaDTO dtoDE;
+        DetalleEntradaDAO daoDE = new DetalleEntradaDAO();
+        HttpSession s = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        
+        dto.getEntidad().setIdUsuario(Integer.parseInt(s.getAttribute("idUsuario").toString()));
+        dto.getEntidad().setNumFactura(Factura);
+        dto.getEntidad().setProveedor(Proveedor);
+        dto.getEntidad().setTotal(total);
+        dto.getEntidad().setFecha(new Timestamp(new Date().getTime()));
+        int idEntradaCreado = dao.createConRetorno(dto);
+        
+        for(int i=0; i<listaParaEntrada.size();i++)
+        {
+            dtoDE= new DetalleEntradaDTO();
+            dtoDE.getEntidad().setCantidad(listaParaEntrada.get(i).getCantidad());
+            dtoDE.getEntidad().setCosto(listaParaEntrada.get(i).getPrecio());
+            dtoDE.getEntidad().setIdEntrada(idEntradaCreado);
+            dtoDE.getEntidad().setIdProducto(listaParaEntrada.get(i).getIdProducto());
+            
+            producto = new ProductoDTO();
+            ProductoDAO daop = new ProductoDAO();
+            producto.getEntidad().setIdProducto(listaParaEntrada.get(i).getIdProducto());
+            producto = daop.read(producto);
+            
+            producto.getEntidad().setExistencia(producto.getEntidad().getExistencia()+listaParaEntrada.get(i).getCantidad());
+            
+            daop.update(producto);
+            
+            daoDE.create(dtoDE);
+            
+        }
+        Factura="";
+        Proveedor="";
+        contador=0;
+        cantidad=0;
+        Codigo="";
+        listaParaEntrada.clear();
+        
+    }
     
     public void agregarAEntrada(){
         
         Venta_Producto vp = new Venta_Producto();
         
+        vp.setId(contador);
         vp.setIdProducto(producto.getEntidad().getIdProducto());
         vp.setNombre(producto.getEntidad().getNombre());
         vp.setPresentacion(producto.getEntidad().getPresentacion());
         vp.setSustancia(producto.getEntidad().getSustancia());
-        vp.setPrecio(new BigDecimal(Float.parseFloat(precio)));
+        vp.setPrecio(new BigDecimal(String.valueOf(costo)));
         vp.setCantidad(cantidad);
         
         listaParaEntrada.add(vp);
         
+        total = total.add(new BigDecimal(Float.parseFloat(costo)*cantidad));
+        contador++;
         cantidad=0;
+        Codigo="";
         
     }
     
@@ -169,12 +240,12 @@ public class EntradaMB extends BaseBean implements Serializable {
         DetalleEntradaDAO daoDEntrada = new DetalleEntradaDAO();
         ProductoDAO daoProducto = new ProductoDAO();
         ProductoDTO dtoProducto = new ProductoDTO();
-        Entrada_Producto vp;
+        Venta_Producto vp;
 
         listaDetail = daoDEntrada.readByIdEntrada(dto);
 
         for (int i = 0; i < listaDetail.size(); i++) {
-            vp = new Entrada_Producto();
+            vp = new Venta_Producto();
 
             dtoProducto.getEntidad().setIdProducto(listaDetail.get(i).getIdProducto());
             dtoProducto = daoProducto.read(dtoProducto);
@@ -184,8 +255,9 @@ public class EntradaMB extends BaseBean implements Serializable {
             vp.setReceta(dtoProducto.getEntidad().isReceta());
             vp.setSustancia(dtoProducto.getEntidad().getSustancia());
             vp.setPresentacion(dtoProducto.getEntidad().getPresentacion());
-            vp.setCosto(listaDetail.get(i).getCosto());
+            vp.setPrecio(listaDetail.get(i).getCosto());
             vp.setNombre(dtoProducto.getEntidad().getNombre());
+            vp.setSubtotal(listaDetail.get(i).getCosto().multiply(new BigDecimal(listaDetail.get(i).getCantidad())));
 
             listaDeDetalles.add(vp);
 

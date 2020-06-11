@@ -29,6 +29,23 @@ public class EntradaDAO {
         }
     }
     
+    public int createConRetorno(EntradaDTO dto){
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = s.getTransaction();
+        int idret=0;
+        try{
+        trans.begin();
+        idret =(int) s.save(dto.getEntidad());
+        trans.commit();
+        }catch(HibernateException he)
+        {
+            if(trans!=null && trans.isActive())
+                trans.rollback();
+        }
+        
+        return idret;
+    }
+    
     public void update(EntradaDTO dto){
         Session s = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction trans = s.getTransaction();

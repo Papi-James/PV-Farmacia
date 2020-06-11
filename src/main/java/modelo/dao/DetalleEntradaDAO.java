@@ -2,6 +2,7 @@ package modelo.dao;
 
 import java.util.List;
 import modelo.dto.DetalleEntradaDTO;
+import modelo.dto.EntradaDTO;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -82,6 +83,23 @@ public class DetalleEntradaDAO {
         try{
         trans.begin();
         Query q = s.createQuery("from DetalleEntrada de order by de.idDEntrada");
+        l=q.list();
+        trans.commit();
+        }catch(HibernateException he)
+        {
+            if(trans!=null && trans.isActive())
+                trans.rollback();
+        }
+        return l;
+    }
+    
+    public List readByIdEntrada(EntradaDTO dto){
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = s.getTransaction();
+        List l = null;
+        try{
+        trans.begin();
+        Query q = s.createQuery("from DetalleEntrada de where identrada ="+dto.getEntidad().getIdEntrada()+" order by de.idEntrada");
         l=q.list();
         trans.commit();
         }catch(HibernateException he)

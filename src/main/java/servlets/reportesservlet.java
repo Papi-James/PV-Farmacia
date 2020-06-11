@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -26,7 +27,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import utilerias.HibernateUtil;
 
 
-@WebServlet(name = "ReportePDF", urlPatterns = {"/medico/reportesservlet", "/categoria/reportesservlet", "/usuario/reportesservlet", "/Venta/reportesservlet", "/Entrada/reportesservlet", "/Detalle/reportesservlet", "/Producto/reportesservlet", "/reportesservlet"})
+@WebServlet(name = "ReportePDF", urlPatterns = {"/medico/reportesservlet", "/categoria/reportesservlet", "/usuario/reportesservlet", "/venta/reportesservlet", "/entrada/reportesservlet", "/detalle/reportesservlet", "/producto/reportesservlet", "/reportesservlet"})
 public class reportesservlet extends HttpServlet {
 
     /**
@@ -60,6 +61,14 @@ public class reportesservlet extends HttpServlet {
                         }else{
                             if(accion.equals("reporteUsuarios")){
                                 reporteUsuarios(request, response);
+                            }else{
+                                if(accion.equals("reporteDetalleV")){
+                                    reporteDetalleV(request, response);
+                                }else{
+                                    if(accion.equals("reporteDetalleE")){
+                                        reporteDetalleE(request, response);
+                                    }
+                                }
                             }    
                         }    
                     }
@@ -244,5 +253,55 @@ public class reportesservlet extends HttpServlet {
         } catch (IOException e) {
         }
     }
+
+    private void reporteDetalleV(HttpServletRequest request, HttpServletResponse response) throws JRException {
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        SessionImplementor implementor = (SessionImplementor)s;
+        Transaction trans = s.getTransaction();
+        try {
+            try (ServletOutputStream sos = response.getOutputStream()) {
+                int idDV = Integer.parseInt(request.getParameter("idDV"));
+                Map parametro = new HashMap();
+                parametro.put("Id_Venta", idDV);
+                File reporte = new File(getServletConfig().getServletContext().getRealPath("reportes/DetalleVenta.jasper"));
+                byte[] bytes;
+                trans.begin();
+                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),parametro,implementor.connection());
+                trans.commit();
+                response.setContentType("application/pdf");
+                response.setContentLength(bytes.length);
+                sos.write(bytes, 0, bytes.length);
+                sos.flush();
+               
+            }
+        } catch (IOException e) {
+        }
+    }
+
+    private void reporteDetalleE(HttpServletRequest request, HttpServletResponse response) throws JRException {
+       Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        SessionImplementor implementor = (SessionImplementor)s;
+        Transaction trans = s.getTransaction();
+        try {
+            try (ServletOutputStream sos = response.getOutputStream()) {
+                int idDE = Integer.parseInt(request.getParameter("idDE"));
+                Map parametro = new HashMap();
+                parametro.put("Id_Venta", idDE);
+                File reporte = new File(getServletConfig().getServletContext().getRealPath("reportes/DetalleEntrada.jasper"));
+                byte[] bytes;
+                trans.begin();
+                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),parametro,implementor.connection());
+                trans.commit();
+                response.setContentType("application/pdf");
+                response.setContentLength(bytes.length);
+                sos.write(bytes, 0, bytes.length);
+                sos.flush();
+               
+            }
+        } catch (IOException e) {
+        }
+    }
+    
+    
 
 }

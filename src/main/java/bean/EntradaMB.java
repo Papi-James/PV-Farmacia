@@ -10,6 +10,7 @@ import static bean.BaseBean.ACC_CREAR;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -18,8 +19,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import modelo.dao.EntradaDAO;
+import modelo.dao.ProductoDAO;
 import modelo.dto.EntradaDTO;
-
+import modelo.dto.ProductoDTO;
+import org.primefaces.PrimeFaces;
+import utilerias.Venta_Producto;
 
 /**
  *
@@ -32,89 +36,118 @@ import modelo.dto.EntradaDTO;
 @NoArgsConstructor
 public class EntradaMB extends BaseBean implements Serializable {
 
-
     private EntradaDAO dao = new EntradaDAO();
     private EntradaDTO dto;
     private List<EntradaDTO> listaDeEntradas;
-    
+    private String Codigo = "";
+    private List<Venta_Producto> listaParaEntrada;
+    private ProductoDTO producto;
+    private String precio;
+    private int cantidad;
+    private int contador=0;
+
     @PostConstruct
-    public void init(){
+    public void init() {
         listaDeEntradas = new ArrayList<>();
         listaDeEntradas = dao.readAll();
+        listaParaEntrada = new ArrayList<>();
     }
-    
-    public String prepareAdd(){
-        dto= new EntradaDTO();
-        setAccion(ACC_CREAR);
-        return "/entrada/entradaForm?faces-redirect=true";
-    }
-    
-    public String prepareUpdate(){
-        setAccion(ACC_ACTUALIZAR);
-        return "/entrada/entradaForm?faces-redirect=true";
-    }
-    
-    public String prepareIndex(){
+
+    public String prepareIndex() {
         init();
         return "/Entrada/listadoEntradas?faces-redirect=true";
     }
     
-    public String back(){
+    public String prepareAdd()
+    {
+        return "/Entrada/registroEntrada?faces-redirect=true";
+    }
+
+    public String back() {
         return prepareIndex();
     }
-    
-    public boolean validate(){
+
+    public boolean validate() {
         boolean valido = true;
         return valido;
     }
-    
-    public String add()
-    {
-        Boolean valido = validate();
-        if(valido){
-            dao.create(dto);
-            if(valido)
-            {
-                return prepareIndex();
-            }
-            else
-                return prepareAdd();
-        }
-        return prepareAdd();
-    }
-    
-    public String update()
-    {
-        Boolean valido = validate();
-        if(valido){
-            dao.update(dto);
-            if(valido)
-            {
-                return prepareIndex();
-            }
-            else
-                return prepareUpdate();
-        }
-        return prepareUpdate();
-    }
-    
-    public String delete()
-    {
-        dao.delete(dto);      
+
+    public String delete() {
+        dao.delete(dto);
         return prepareIndex();
     }
-    
-    public void seleccionarEntrada(){
-        String claveSel = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("claveSel");
+
+    public void seleccionarEntrada() {
+        String claveSel = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("claveSel");
         dto = new EntradaDTO();
         dto.getEntidad().setIdEntrada(Integer.parseInt(claveSel));
-        
-        try{
+
+        try {
             dto = dao.read(dto);
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public void analizarCodigo() {
+
+        if (Codigo.length() > 7) {
+            ///Codigo de producto
+            buscarProductoxBarras();
+        } else {   //codigo de barras
+            buscarProductoxId();
+        }
+        
+        if(producto.getEntidad()!=null)
+        {
+        PrimeFaces current = PrimeFaces.current();
+        current.executeScript("PF('DialogoDetalleEntrada').show();");
+        
+        precio=producto.getEntidad().getPrecio()+"";
+        }
+        else
+        {
+            PrimeFaces current = PrimeFaces.current();
+            current.executeScript("PF('DialNoRegistrado').show();");
+        }
+            
+    }
     
+    public void buscarProductoxBarras(){
+        ProductoDAO daoP = new ProductoDAO();
+        producto= new ProductoDTO();
+        producto.getEntidad().setCodBarras(Codigo);
+        
+        producto=daoP.readByBarras(producto);
+    }
+    
+    public void buscarProductoxId(){
+        ProductoDAO daoP = new ProductoDAO();
+        producto= new ProductoDTO();
+        producto.getEntidad().setIdProducto(Integer.parseInt(Codigo));
+        
+        producto=daoP.read(producto);
+    }
+    
+    public void modificarEntrada(){}
+    
+    public void prepareEntrada(){}
+    
+    public void agregarAEntrada(){
+        
+        Venta_Producto vp = new Venta_Producto();
+        
+        vp.setIdProducto(producto.getEntidad().getIdProducto());
+        vp.setNombre(producto.getEntidad().getNombre());
+        vp.setPresentacion(producto.getEntidad().getPresentacion());
+        vp.setSustancia(producto.getEntidad().getSustancia());
+        vp.setPrecio(new BigDecimal(Float.parseFloat(precio)));
+        vp.setCantidad(cantidad);
+        
+        listaParaEntrada.add(vp);
+        
+        cantidad=0;
+        
+    }
+
 }

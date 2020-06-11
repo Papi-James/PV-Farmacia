@@ -29,9 +29,11 @@ width: 300px;
 
 .primeraColumnaDialog2 {
 width: 200px;
+margin: 20px;
 }
 .segundaColumnaDialog2 {
 width: 300px;
+margin: 20px;
 }
 
 .ui-growl-item {

@@ -39,7 +39,8 @@
                     <h:form >
                     <div>
                         <h:panelGrid id="panelContenedor" columns="2">
-                        <h:panelGrid id="panelDatos" columns="2" class="form-group row" style="margin-top: 20px;" columnClasses="primeraColumnaDialog2,segundaColumnaDialog2">
+                         <p:graphicImage value="#{productoMB.mostrarImagen()}"  id="pic1" style="width:250px;width:250px; margin-right: 20px;" cache="false"/>
+                            <h:panelGrid id="panelDatos" columns="2" class="form-group row" style="margin-top: 20px;" columnClasses="primeraColumnaDialog2,segundaColumnaDialog2">
                             <h:outputText value="ID:" class="font-weight-bold col-sm-2 col-form-label"/>
                             <h:outputText value="#{productoMB.dto.entidad.idProducto}" class="col-form-label"/>
 
@@ -73,7 +74,7 @@
                             <h:outputText value="#{msg['l.p.codBarras']}:" class="font-weight-bold col-sm-2 col-form-label"/>
                             <h:outputText value="#{productoMB.dto.entidad.codBarras}" class="col-form-label"/>
                         </h:panelGrid>
-                            
+                           
                         </h:panelGrid>
                         <div align="center">
                             <h:commandButton class="btn btn-success btn-lg" value="#{msg['bp.cerrar']}" onclick="PF('DialogoDetalleProducto').hide();" style="margin-right: 20px;" />
@@ -127,7 +128,7 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{msg['pv.precio']}"/>
                                             </f:facet>
-                                            <h:outputText value="#{dto.precio}"/>
+                                            <h:outputText value="$ #{dto.precio}"/>
                                         </h:column>
                                         <h:column >
                                             <h:commandLink action="#{productoMB.detalleProducto()}" actionListener="#{productoMB.seleccionarProducto()}" style="margin-left: 10px;">

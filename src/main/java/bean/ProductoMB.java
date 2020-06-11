@@ -4,6 +4,8 @@ import static bean.BaseBean.ACC_ACTUALIZAR;
 import static bean.BaseBean.ACC_CREAR;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -133,6 +135,37 @@ public class ProductoMB extends BaseBean implements Serializable {
         {
             e.printStackTrace();
         }
+    }
+    
+    public StreamedContent mostrarImagen()
+    {
+        if(dto!=null)
+        {
+        if (dto.getEntidad().getImagen() != null)
+            return new DefaultStreamedContent(new ByteArrayInputStream(dto.getEntidad().getImagen()));
+        else
+        {
+            File imagendefault = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/")+"imagenes/productoSinFoto.png");
+            byte[] ArregloBytes = new byte[(int) imagendefault.length()];
+
+            FileInputStream fis;
+            try {
+                fis = new FileInputStream(imagendefault);
+                fis.read(ArregloBytes);
+                fis.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ProductoMB.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ProductoMB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+
+            return new DefaultStreamedContent(new ByteArrayInputStream(ArregloBytes));
+        }
+        }
+        else
+            return null;
+            
     }
     
     public void detalleProducto(){

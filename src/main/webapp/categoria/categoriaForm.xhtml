@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>#{msg['categoria.titulo.nuevo']}</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
@@ -46,26 +47,27 @@
                                     <h:panelGrid >
                                         <f:view>
                                             <h:form id="frmCategoria" >
+                                                <p:growl id="message" showDetail="false" sticky="true"  />
                                                 <h:inputHidden id="accion" value="#{categoriaMB.accion}"/>
                                                 <h:panelGrid columns="2" class="form-group row">
                                                     <h:outputText value="ID" class="col-sm-2 col-form-label" rendered="#{categoriaMB.modoActualizar}"/>
                                                     <h:outputText value="#{categoriaMB.dto.entidad.idCategoria}" rendered="#{categoriaMB.modoActualizar}" class="col-form-label"/>
 
                                                     <h:outputText value="#{msg['l.nombre']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formNombreC" value="#{categoriaMB.dto.entidad.nombre}" class="form-control"/>
+                                                    <h:inputText id="formNombreC" value="#{categoriaMB.dto.entidad.nombre}" class="form-control" validator="#{categoriaMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.descripcion']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputTextarea id="formDescripcionC" value="#{categoriaMB.dto.entidad.descripcion}" class="form-control"/>
+                                                    <h:inputTextarea id="formDescripcionC" value="#{categoriaMB.dto.entidad.descripcion}" class="form-control" validator="#{categoriaMB.validate}"/>
                                                 </h:panelGrid>
                                                 <div>
                                                     <h:commandButton value="#{msg.botonNuevo}" action="#{categoriaMB.add()}" rendered="#{categoriaMB.modoCrear}" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>
 
                                                     <h:commandButton value="#{msg.botonActualizar}" action="#{categoriaMB.update()}" rendered="#{categoriaMB.modoActualizar}" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>
 
-                                                    <h:commandButton value="#{msg.botonRegresar}" action="#{categoriaMB.back()}" class="alert alert-danger btn-block" style="margin-top: 30px; margin-left: 30px;"/>
-
-<!--<h:commandButton value="#{msg['botonNuevo']}" action="#" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 30px;"/>-->
                                                 </div>
+                                            </h:form>
+                                            <h:form>
+                                                <h:commandButton value="#{msg.botonRegresar}" action="#{categoriaMB.back()}" class="alert alert-danger btn-block" style="margin-top: 10px; margin-left: 30px;"/>
                                             </h:form>
                                         </f:view>
                                     </h:panelGrid>

@@ -24,19 +24,13 @@
                                 <p:growl id="message" showDetail="true" sticky="true"  />
                                 <h:panelGrid columns="2" class="form-group row">
                                     <h:outputText value="#{msg['login.nombreu']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputText id="formNombreUsuario"  class="form-control" value="#{loginMB.dto.entidad.nombreUsuario}"/>
-                                    
+                                    <h:inputText id="formNombreUsuario"  class="form-control" value="#{loginMB.dto.entidad.nombreUsuario}" validator="#{usuarioMB.validate}"/>
                                     <h:outputText value="#{msg['login.contra']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputSecret id="formContrasenia" class="form-control" value="#{loginMB.dto.entidad.contrasenia}"/>
-                                </h:panelGrid>
-                                <!--<p:messages id="messages" showDetail="true" closable="true">
-        
-    </p:messages>-->
-                                
+                                    <h:inputSecret id="formContrasenia" class="form-control" value="#{loginMB.dto.entidad.contrasenia}" validator="#{usuarioMB.validate}" />
+                                </h:panelGrid>  
                                 <div>
                                     <h:commandButton value="#{msg['login.botonLogin']}" action="#{loginMB.login()}" class="alert alert-info btn-block" style="margin-top: 30px;" />
-                                </div>
-                                
+                                </div>      
                             </h:form>
                         </f:view>
                     </h:panelGrid>

@@ -16,8 +16,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.validator.ValidatorException;
 import javax.servlet.http.Part;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -177,4 +180,37 @@ public class ProductoMB extends BaseBean implements Serializable {
         listaCoincidente = dao.readByNameOrSustance(nombreBuscador);
     }
     
+    public void validate(FacesContext arg0, UIComponent arg1, Object arg2)
+            throws ValidatorException {
+        if (arg1.getId().equals("formNombreP")) {
+            if (((String) arg2).length() < 1) {
+                throw new ValidatorException(new FacesMessage("El nombre del producto no puede estar vacio"));
+            }
+        } else if(arg1.getId().equals("formPresentacionP")) {
+            if (((String) arg2).length() < 1) {
+                throw new ValidatorException(new FacesMessage("La presentacion del producto no puede estar vacia"));
+            }
+        } else if(arg1.getId().equals("formMarcaP")) {
+            if (((String) arg2).length() < 1) {
+                throw new ValidatorException(new FacesMessage("Se debe de insertar la marca del producto"));
+            }
+        } else if(arg1.getId().equals("formPrecioP")) {
+            if ((arg2)==null) {
+                throw new ValidatorException(new FacesMessage("Se debe de insertar el precio del producto"));
+            }
+        } else if(arg1.getId().equals("formCostoP")) {
+            if ((arg2)==null) {
+                throw new ValidatorException(new FacesMessage("Se debe de insertar el costo del producto"));
+            }
+        } else if(arg1.getId().equals("formIvaP")) {
+            if (arg2==null) {
+                throw new ValidatorException(new FacesMessage("Se debe de insertar el iva del producto"));
+            }
+        } else if(arg1.getId().equals("formExistenciaP")) {
+            if (((String) arg2.toString()).length() < 1) {
+                throw new ValidatorException(new FacesMessage("Se debe de insertar las existencias del producto"));
+            }
+        }
+        
+    }
 }

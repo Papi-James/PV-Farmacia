@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>#{msg['categoria.titulo.nuevo']}</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
@@ -45,28 +46,29 @@
                                     <h:panelGrid >
                                         <f:view>
                                             <h:form id="frmCategoria" >
+                                                <p:growl id="message" showDetail="false" sticky="true"  />
                                                 <h:inputHidden id="accion" value="#{usuarioMB.accion}"/>
                                                 <h:panelGrid columns="2" class="form-group row">
                                                     <h:outputText value="ID" class="col-sm-2 col-form-label" rendered="#{usuarioMB.modoActualizar}"/>
                                                     <h:outputText value="#{usuarioMB.dto.entidad.idUsuario}" rendered="#{usuarioMB.modoActualizar}" class="col-form-label"/>
 
                                                     <h:outputText value="#{msg['l.u.nombre']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formNombre" value="#{usuarioMB.dto.entidad.nombre}" class="form-control"/>
+                                                    <h:inputText id="formNombre" value="#{usuarioMB.dto.entidad.nombre}" class="form-control" validator="#{usuarioMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.u.paterno']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formPaterno" value="#{usuarioMB.dto.entidad.paterno}" class="form-control"/>
+                                                    <h:inputText id="formPaterno" value="#{usuarioMB.dto.entidad.paterno}" class="form-control" validator="#{usuarioMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.u.materno']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formMaterno" value="#{usuarioMB.dto.entidad.materno}" class="form-control"/>
+                                                    <h:inputText id="formMaterno" value="#{usuarioMB.dto.entidad.materno}" class="form-control" validator="#{usuarioMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.u.correo']}" class="col-sm-2 col-form-label"/>
                                                     <h:inputText id="formCorreo" value="#{usuarioMB.dto.entidad.email}" class="form-control"/>
 
                                                     <h:outputText value="#{msg['l.u.nomUsuario']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formNombreUsuario" value="#{usuarioMB.dto.entidad.nombreUsuario}" class="form-control"/>
+                                                    <h:inputText id="formNombreUsuario" value="#{usuarioMB.dto.entidad.nombreUsuario}" class="form-control" validator="#{usuarioMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.u.contra']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formContra" value="#{usuarioMB.dto.entidad.contrasenia}" class="form-control"/>
+                                                    <h:inputText id="formContra" value="#{usuarioMB.dto.entidad.contrasenia}" class="form-control" validator="#{usuarioMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.u.tipoUsuario']}" class="col-sm-2 col-form-label"/>
                                                     <h:selectOneMenu id="formTipoUsuario" value="#{usuarioMB.dto.entidad.tipoUsuario}" class="form-control">
@@ -80,9 +82,10 @@
 
                                                     <h:commandButton value="#{msg.botonActualizar}" action="#{usuarioMB.update()}" rendered="#{usuarioMB.modoActualizar}" class="alert alert-info btn-block" style="margin-top: 30px; "/>
 
-                                                    <h:commandButton value="#{msg.botonRegresar}" action="#{usuarioMB.back()}" class="alert alert-danger btn-block" style="margin-top: 30px;"/>
-
                                                 </div>
+                                            </h:form>
+                                            <h:form>
+                                                <h:commandButton value="#{msg.botonRegresar}" action="#{usuarioMB.back()}" class="alert alert-danger btn-block" style="margin-top: 30px;"/>
                                             </h:form>
                                         </f:view>
                                     </h:panelGrid>

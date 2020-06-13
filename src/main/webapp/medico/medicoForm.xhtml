@@ -2,9 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>#{msg['categoria.titulo.nuevo']}</title>
+        <title>#{msg['medico.titulo']}</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <h:outputStylesheet library="css" name="EstilosPersonales.css"/>
@@ -39,31 +40,32 @@
                         <div class="container ">
                             <div class="text-white bg-info mb-3" style="width: 27rem; margin: auto; margin-top: 70px;" >
                                 <div class=" text-center">
-                                    <h1>#{msg['fu.datos']}</h1>
+                                    <h1>#{msg['fm.datos']}</h1>
                                 </div>
                                 <div class="card-body text-white" style="margin: 20px;">
                                     <h:panelGrid >
                                         <f:view>
                                             <h:form id="frmCategoria" >
+                                                <p:growl id="message" showDetail="false" sticky="true"  />
                                                 <h:inputHidden id="accion" value="#{medicoMB.accion}"/>
                                                 <h:panelGrid columns="2" class="form-group row">
                                                     <h:outputText value="ID" class="col-sm-2 col-form-label" rendered="#{medicoMB.modoActualizar}"/>
                                                     <h:outputText value="#{medicoMB.dto.entidad.idMedico}" rendered="#{medicoMB.modoActualizar}" class="col-form-label"/>
 
                                                     <h:outputText value="#{msg['l.m.nombre']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formNombre" value="#{medicoMB.dto.entidad.nombre}" class="form-control"/>
+                                                    <h:inputText id="formNombre" value="#{medicoMB.dto.entidad.nombre}" class="form-control" validator="#{medicoMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.m.paterno']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formPaterno" value="#{medicoMB.dto.entidad.paterno}" class="form-control"/>
+                                                    <h:inputText id="formPaterno" value="#{medicoMB.dto.entidad.paterno}" class="form-control" validator="#{medicoMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.m.materno']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formMaterno" value="#{medicoMB.dto.entidad.materno}" class="form-control"/>
+                                                    <h:inputText id="formMaterno" value="#{medicoMB.dto.entidad.materno}" class="form-control" validator="#{medicoMB.validate}"/>
                                                     
                                                     <h:outputText value="#{msg['l.m.cedula']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formCedula" value="#{medicoMB.dto.entidad.cedula}" class="form-control"/>
+                                                    <h:inputText id="formCedula" value="#{medicoMB.dto.entidad.cedula}" class="form-control" validator="#{medicoMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.m.direccion']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formDireccion" value="#{medicoMB.dto.entidad.direccion}" class="form-control"/>
+                                                    <h:inputText id="formDireccion" value="#{medicoMB.dto.entidad.direccion}" class="form-control" validator="#{medicoMB.validate}"/>
 
 
                                                 </h:panelGrid>
@@ -72,9 +74,10 @@
 
                                                     <h:commandButton value="#{msg.botonActualizar}" action="#{medicoMB.update()}" rendered="#{medicoMB.modoActualizar}" class="alert alert-info btn-block" style="margin-top: 30px; "/>
 
-                                                    <h:commandButton value="#{msg.botonRegresar}" action="#{medicoMB.back()}" class="alert alert-danger btn-block" style="margin-top: 30px;"/>
-
                                                 </div>
+                                            </h:form>
+                                            <h:form>
+                                                <h:commandButton value="#{msg.botonRegresar}" action="#{medicoMB.back()}" class="alert alert-danger btn-block" style="margin-top: 10px;"/>
                                             </h:form>
                                         </f:view>
                                     </h:panelGrid>

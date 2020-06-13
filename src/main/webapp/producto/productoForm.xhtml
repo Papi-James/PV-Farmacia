@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>#{msg['producto.titulo.nuevo']}</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
@@ -45,6 +46,7 @@
                                     <h:panelGrid >
                                         <f:view>
                                             <h:form id="frmProducto" enctype="multipart/form-data">
+                                                <p:growl id="message" showDetail="false" sticky="true"  />
                                                 <h:inputHidden id="accion" value="#{productoMB.accion}"/>
                                                 <h:panelGrid columns="2" class="form-group row" cellpadding="2" columnClasses="primeraColumna,segundaColumna">
                                                     <h:outputText value="ID" class="col-sm-2 col-form-label" rendered="#{productoMB.modoActualizar}"/>
@@ -56,13 +58,13 @@
                                                     </h:selectOneMenu>
 
                                                     <h:outputText value="#{msg['l.nombre']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formNombreP" value="#{productoMB.dto.entidad.nombre}" class="form-control"/>
+                                                    <h:inputText id="formNombreP" value="#{productoMB.dto.entidad.nombre}" class="form-control" validator="#{productoMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.p.presentacion']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formPresentacionP" value="#{productoMB.dto.entidad.presentacion}" class="form-control"/>
+                                                    <h:inputText id="formPresentacionP" value="#{productoMB.dto.entidad.presentacion}" class="form-control" validator="#{productoMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.p.marca']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formMarcaP" value="#{productoMB.dto.entidad.marca}" class="form-control"/>
+                                                    <h:inputText id="formMarcaP" value="#{productoMB.dto.entidad.marca}" class="form-control" validator="#{productoMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.p.nombreComercial']}" class="col-sm-2 col-form-label"/>
                                                     <h:inputText id="formNombreComercialP" value="#{productoMB.dto.entidad.nombreComercial}" class="form-control"/>
@@ -90,19 +92,19 @@
                                                     <h:inputText id="formCodBarrasP" value="#{productoMB.dto.entidad.codBarras}" class="form-control"/>
 
                                                     <h:outputText value="#{msg['l.p.precio']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formPrecioP" value="#{productoMB.dto.entidad.precio}" class="form-control"/>
+                                                    <h:inputText id="formPrecioP" value="#{productoMB.dto.entidad.precio}" class="form-control" validator="#{productoMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.p.costo']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formCostoP" value="#{productoMB.dto.entidad.costo}" class="form-control"/>
+                                                    <h:inputText id="formCostoP" value="#{productoMB.dto.entidad.costo}" class="form-control" validator="#{productoMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.p.iva']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formIvaP" value="#{productoMB.dto.entidad.iva}" class="form-control"/>
+                                                    <h:inputText id="formIvaP" value="#{productoMB.dto.entidad.iva}" class="form-control" validator="#{productoMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.p.proveedor']}" class="col-sm-2 col-form-label"/>
                                                     <h:inputText id="formProveedorP" value="#{productoMB.dto.entidad.proveedor}" class="form-control"/>
 
                                                     <h:outputText value="#{msg['l.p.exist']}" class="col-sm-2 col-form-label"/>
-                                                    <h:inputText id="formExistenciaP" value="#{productoMB.dto.entidad.existencia}" class="form-control"/>
+                                                    <h:inputText id="formExistenciaP" value="#{productoMB.dto.entidad.existencia}" class="form-control" validator="#{productoMB.validate}"/>
 
                                                     <h:outputText value="#{msg['l.p.imagen']}" class="col-sm-2 col-form-label"/>
                                                     <h:inputFile id="formImagenP" value="#{productoMB.img}" class="form-control">
@@ -117,9 +119,10 @@
 
                                                     <h:commandButton value="#{msg.botonActualizar}" action="#{productoMB.update()}" rendered="#{productoMB.modoActualizar}" class="alert alert-info btn-block" style="margin-top: 30px; margin-left: 10px;"/>
 
-                                                    <h:commandButton value="#{msg.botonRegresar}" action="#{productoMB.back()}" class="alert alert-danger btn-block" style="margin-top: 30px; margin-left: 10px;"/>
-
                                                 </div>
+                                            </h:form>
+                                            <h:form>
+                                                <h:commandButton value="#{msg.botonRegresar}" action="#{productoMB.back()}" class="alert alert-danger btn-block" style="margin-top: 30px; margin-left: 10px;"/>
                                             </h:form>
                                         </f:view>
                                     </h:panelGrid>

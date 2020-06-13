@@ -6,7 +6,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -106,6 +109,32 @@ public class MedicoMB extends BaseBean implements Serializable{
         {
             e.printStackTrace();
         }
+    }
+    
+    public void validate(FacesContext arg0, UIComponent arg1, Object arg2)
+            throws ValidatorException {
+        if (arg1.getId().equals("formNombre") || arg1.getId().equals("nombreMedico")) {
+            if (((String) arg2).length() < 1) {
+                throw new ValidatorException(new FacesMessage("El nombre del medico no puede estar vacio"));
+            }
+        } else if(arg1.getId().equals("formPaterno") || arg1.getId().equals("paternoMedico")) {
+            if (((String) arg2).length() < 1) {
+                throw new ValidatorException(new FacesMessage("El apellido paterno del medico no puede estar vacio"));
+            }
+        } else if(arg1.getId().equals("formMaterno") || arg1.getId().equals("maternoMedico")) {
+            if (((String) arg2).length() < 1) {
+                throw new ValidatorException(new FacesMessage("El apellido materno del medico no puede estar vacio"));
+            }
+        } else if(arg1.getId().equals("formCedula") || arg1.getId().equals("cedulaMedico")) {
+            if (((String) arg2).length() < 1) {
+                throw new ValidatorException(new FacesMessage("La cedula del medico no puede estar vacia"));
+            }
+        } else if(arg1.getId().equals("formDireccion") || arg1.getId().equals("direccionMedico")) {
+            if (((String) arg2).length() < 1) {
+                throw new ValidatorException(new FacesMessage("La dirección del medico no puede estar vacia"));
+            }
+        } 
+        
     }
    
 }

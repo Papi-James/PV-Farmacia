@@ -68,6 +68,7 @@
                                 <p:dialog header="#{msg['pv.antibiotico']}" widgetVar="DialogoMedico" minHeight="40" showEffect="fade" responsive="true">
                                     <div>
                                         <h:form id="formMedico">
+                                            <p:growl id="message" showDetail="false" sticky="true"  />
                                             <p:remoteCommand name="rellenarCampos" actionListener="#{puntoVentaMB.buscarMedico()}" update="nombreMedico maternoMedico paternoMedico direccionMedico"/>
                                             <h:outputText value="Este medicamento requiere de receta medica para poder ser vendido&lt;br/&gt;&lt;br/&gt;Por favor ingresa los datos de la receta" escape="false" />
                                             <h:panelGrid columns="2" class="form-group row" style="margin-top: 20px;" columnClasses="primeraColumnaDialog,segundaColumnaDialog">
@@ -75,23 +76,26 @@
                                                 <h:inputText id="cedulaMedico" class="form-control" value="#{puntoVentaMB.dtoMedico.entidad.cedula}" onkeypress="if (event.keyCode == 13) {
                                                             rellenarCampos();
                                                             return false;
-                                                        }"/>
+                                                        }" validator="#{medicoMB.validate}"/>
                                                 <h:outputText value="#{msg['l.nombre']}" class="col-sm-2 col-form-label"/>
-                                                <h:inputText id="nombreMedico" class="form-control" value="#{puntoVentaMB.dtoMedico.entidad.nombre}" />
+                                                <h:inputText id="nombreMedico" class="form-control" value="#{puntoVentaMB.dtoMedico.entidad.nombre}" validator="#{medicoMB.validate}"/>
 
                                                 <h:outputText value="#{msg['l.paterno']}" class="col-sm-2 col-form-label"/>
-                                                <h:inputText id="paternoMedico" class="form-control" value="#{puntoVentaMB.dtoMedico.entidad.paterno}" />
+                                                <h:inputText id="paternoMedico" class="form-control" value="#{puntoVentaMB.dtoMedico.entidad.paterno}" validator="#{medicoMB.validate}" />
 
                                                 <h:outputText value="#{msg['l.materno']}" class="col-sm-2 col-form-label"/>
-                                                <h:inputText id="maternoMedico" class="form-control" value="#{puntoVentaMB.dtoMedico.entidad.materno}" />
+                                                <h:inputText id="maternoMedico" class="form-control" value="#{puntoVentaMB.dtoMedico.entidad.materno}" validator="#{medicoMB.validate}" />
 
                                                 <h:outputText value="#{msg['l.m.direccion']}" class="col-sm-2 col-form-label"/>
-                                                <h:inputText id="direccionMedico" class="form-control" value="#{puntoVentaMB.dtoMedico.entidad.direccion}" />
+                                                <h:inputText id="direccionMedico" class="form-control" value="#{puntoVentaMB.dtoMedico.entidad.direccion}" validator="#{medicoMB.validate}" />
                                             </h:panelGrid>
                                             <div align="center">
-                                                <h:commandButton class="btn btn-warning btn-lg" value="#{msg['pv.cancelar']}" onclick="PF('DialogoMedico').hide();" style="margin-right: 20px;" action="#{puntoVentaMB.limpiarMedico()}" />
+                                                
                                                 <h:commandButton class="btn btn-success btn-lg" value="#{msg['pv.aceptar']}" action="#{puntoVentaMB.MeterProductoNuevoCanasta(true)}" />
                                             </div>
+                                        </h:form>
+                                        <h:form>
+                                        <h:commandButton class="btn btn-warning btn-lg" value="#{msg['pv.cancelar']}" onclick="PF('DialogoMedico').hide();" style="margin-right: 20px;" action="#{puntoVentaMB.limpiarMedico()}" />
                                         </h:form>
                                     </div>
                                 </p:dialog>

@@ -8,7 +8,10 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -126,6 +129,20 @@ public class CategoriaMB extends BaseBean implements Serializable{
             return dto.getEntidad().getNombre();
         else
             return "Nada";
+    }
+    
+    public void validate(FacesContext arg0, UIComponent arg1, Object arg2)
+            throws ValidatorException {
+        if (arg1.getId().equals("formNombreC")) {
+            if (((String) arg2).length() < 1) {
+                throw new ValidatorException(new FacesMessage("El nombre de la categoria no puede estar vacio"));
+            }
+        } else if(arg1.getId().equals("formDescripcionC")) {
+            if (((String) arg2).length() < 1) {
+                throw new ValidatorException(new FacesMessage("La descripcion de la categoria no puede estar vacia"));
+            }
+        } 
+        
     }
     
 }

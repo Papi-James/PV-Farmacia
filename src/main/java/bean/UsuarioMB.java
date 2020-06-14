@@ -141,7 +141,7 @@ public class UsuarioMB extends BaseBean implements Serializable {
             if (((String) arg2).length() < 1) {
                 throw new ValidatorException(new FacesMessage("Se debe de introducir un nombre de usuario"));
             }
-            else if (((String) arg2).length() < 7) {
+            else if (((String) arg2).length() < 6) {
                 throw new ValidatorException(new FacesMessage("El nombre de usuario del nuevo usuario debe de tener al menos 6 caracteres"));
             }
         } else if(arg1.getId().equals("formContrasenia")) {
@@ -164,7 +164,7 @@ public class UsuarioMB extends BaseBean implements Serializable {
             if (((String) arg2).length() < 1) {
                 throw new ValidatorException(new FacesMessage("El campo Contraseña no puede estar vacio"));
             }
-            else if (((String) arg2).length() < 7) {
+            else if (((String) arg2).length() < 6) {
                 throw new ValidatorException(new FacesMessage("La contraseña del usuario debe de tener al menos 6 caracteres"));
             }
         }

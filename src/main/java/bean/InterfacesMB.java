@@ -46,6 +46,14 @@ public class InterfacesMB implements Serializable {
         }
     }
     
+    public void alredyLoged(){
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/faces/Principal.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(InterfacesMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void noAdmin(){
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/faces/errores/NoAdminDenied.xhtml");

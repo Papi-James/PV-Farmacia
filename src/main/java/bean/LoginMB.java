@@ -51,10 +51,12 @@ public class LoginMB implements Serializable {
             }
             else
             {
+                
                 HttpSession s = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 s.setAttribute("nombreUsuario",  dto.getEntidad().getNombreUsuario());
                 s.setAttribute("tipoUsuario",  dto.getEntidad().getTipoUsuario());
                 s.setAttribute("idUsuario",  dto.getEntidad().getIdUsuario());
+                dto=null;
                 return preparePrincipal();
             }
             

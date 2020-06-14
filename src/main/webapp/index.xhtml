@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>#{msg['login.titulo']}</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
@@ -11,31 +12,39 @@
         <h:outputStylesheet library="css" name="EstilosPersonales.css"/>
     </h:head>
     <h:body class="fondoColoresFarmacia">
-        <div class="container ">
-            <div class="text-white bg-info mb-3" style="width: 27rem; margin: auto; margin-top: 100px;" >
-                <div class=" text-center">
-                    <img src="imagenes/user.png" style="height: 100px; width: 100px; margin: 30px;"></img>
-                    <h1>#{msg['login.InicioSesion']}</h1>
+        <c:choose>
+            <c:when test="#{loginMB.loged}">
+                #{interfacesMB.alredyLoged()}
+            </c:when>
+            <c:otherwise>
+<div class="container ">
+                    <div class="text-white bg-info mb-3" style="width: 27rem; margin: auto; margin-top: 100px;" >
+                        <div class=" text-center">
+                            <img src="imagenes/user.png" style="height: 100px; width: 100px; margin: 30px;"></img>
+                            <h1>#{msg['login.InicioSesion']}</h1>
+                        </div>
+                        <div class="card-body text-white" style="margin: 20px;">
+                            <h:panelGrid>
+                                <f:view>
+                                    <h:form id="frmInicioSesion">
+                                        <p:growl id="message" showDetail="true" sticky="true"  />
+                                        <h:panelGrid columns="2" class="form-group row">
+                                            <h:outputText value="#{msg['login.nombreu']}" class="col-sm-2 col-form-label"/>
+                                            <h:inputText id="formNombreUsuario"  class="form-control" value="#{loginMB.dto.entidad.nombreUsuario}" validator="#{usuarioMB.validate}"/>
+                                            <h:outputText value="#{msg['login.contra']}" class="col-sm-2 col-form-label"/>
+                                            <h:inputSecret id="formContrasenia" class="form-control" value="#{loginMB.dto.entidad.contrasenia}" validator="#{usuarioMB.validate}" />
+                                        </h:panelGrid>  
+                                        <div>
+                                            <h:commandButton value="#{msg['login.botonLogin']}" action="#{loginMB.login()}" class="alert alert-info btn-block" style="margin-top: 30px;" />
+                                        </div>      
+                                    </h:form>
+                                </f:view>
+                            </h:panelGrid>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body text-white" style="margin: 20px;">
-                    <h:panelGrid>
-                        <f:view>
-                            <h:form id="frmInicioSesion">
-                                <p:growl id="message" showDetail="true" sticky="true"  />
-                                <h:panelGrid columns="2" class="form-group row">
-                                    <h:outputText value="#{msg['login.nombreu']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputText id="formNombreUsuario"  class="form-control" value="#{loginMB.dto.entidad.nombreUsuario}" validator="#{usuarioMB.validate}"/>
-                                    <h:outputText value="#{msg['login.contra']}" class="col-sm-2 col-form-label"/>
-                                    <h:inputSecret id="formContrasenia" class="form-control" value="#{loginMB.dto.entidad.contrasenia}" validator="#{usuarioMB.validate}" />
-                                </h:panelGrid>  
-                                <div>
-                                    <h:commandButton value="#{msg['login.botonLogin']}" action="#{loginMB.login()}" class="alert alert-info btn-block" style="margin-top: 30px;" />
-                                </div>      
-                            </h:form>
-                        </f:view>
-                    </h:panelGrid>
-                </div>
-            </div>
-        </div>
+            </c:otherwise>
+        </c:choose>
+
     </h:body>
 </html>

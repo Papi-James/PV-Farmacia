@@ -27,7 +27,7 @@ import org.hibernate.engine.spi.SessionImplementor;
 import utilerias.HibernateUtil;
 
 
-@WebServlet(name = "ReportePDF", urlPatterns = {"/medico/reportesservlet", "/categoria/reportesservlet", "/usuario/reportesservlet", "/venta/reportesservlet", "/entrada/reportesservlet", "/detalle/reportesservlet", "/producto/reportesservlet", "/reportesservlet"})
+@WebServlet(name = "ReportePDF", urlPatterns = {"/medico/reportesservlet", "/categoria/reportesservlet", "/usuario/reportesservlet", "/venta/reportesservlet", "/Entrada/reportesservlet", "/detalle/reportesservlet", "/producto/reportesservlet", "/reportesservlet"})
 public class reportesservlet extends HttpServlet {
 
     /**
@@ -286,7 +286,7 @@ public class reportesservlet extends HttpServlet {
             try (ServletOutputStream sos = response.getOutputStream()) {
                 int idDE = Integer.parseInt(request.getParameter("idDE"));
                 Map parametro = new HashMap();
-                parametro.put("Id_Venta", idDE);
+                parametro.put("Id_Entrada", idDE);
                 File reporte = new File(getServletConfig().getServletContext().getRealPath("reportes/DetalleEntrada.jasper"));
                 byte[] bytes;
                 trans.begin();

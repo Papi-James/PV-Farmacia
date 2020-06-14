@@ -130,6 +130,23 @@ public class ProductoDAO {
         return l;
     }
     
+    public List readExistencia(){
+        Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = s.getTransaction();
+        List l = null;
+        try{
+        trans.begin();
+        Query q = s.createSQLQuery("SELECT nombre, existencia FROM Producto");
+        l=q.list();
+        trans.commit();
+        }catch(HibernateException he)
+        {
+            if(trans!=null && trans.isActive())
+                trans.rollback();
+        }
+        return l;
+    }
+    
     public static void main(String[] args) {
         ProductoDAO dao = new ProductoDAO();
         ProductoDTO dto = new ProductoDTO();

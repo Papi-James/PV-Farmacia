@@ -23,6 +23,7 @@
                             <h:form class="form-inline" id="frmNav" >
                                 <h:commandLink class="nav-item nav-link active" action="#{interfacesMB.prepareInterfazAdmin()}">#{msg['navbar.inicio']} <span class="sr-only">(current)</span></h:commandLink>
                                 <a class="nav-link " href="reportesservlet?accion=reporteVentas"  target="_blank"  >#{msg['reporte.ventasG']}</a>
+                                <h:commandLink action="#{graficaMB.showGrafica()}" value="#{msg['navbar.grafica']}"/>
                             </h:form>
                         </div>
                     </div>
@@ -32,6 +33,19 @@
                     </h:form>
                 </div>
             </nav>
+        </f:view>
+        
+        <f:view>
+            <p:dialog header="#{msg['l.p.grafica']}" widgetVar="DialogoGraficaExistencias" minHeight="40" showEffect="fade" responsive="true">
+                <h:form>
+                    <div>
+                        <p:chart type="bar" model="#{graficaMB.animatedModel2}" style="width:1000px;height:500px"/>
+                    </div>
+                    <div align="center">
+                        <h:commandButton class="btn btn-success btn-lg" value="#{msg['bp.cerrar']}" onclick="PF('DialogoGraficaExistencias').hide();" style="margin-right: 20px;" />
+                    </div>
+                </h:form>
+            </p:dialog>
         </f:view>
 
 

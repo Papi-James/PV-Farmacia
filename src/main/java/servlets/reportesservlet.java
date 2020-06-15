@@ -239,7 +239,7 @@ public class reportesservlet extends HttpServlet {
         Transaction trans = s.getTransaction();
         try {
             try (ServletOutputStream sos = response.getOutputStream()) {
-                File reporte = new File(getServletConfig().getServletContext().getRealPath("reportes/GeneralEntradas.jasper"));
+                File reporte = new File(getServletConfig().getServletContext().getRealPath("/reportes/GeneralEntradas.jasper"));
                 byte[] bytes;
                 trans.begin();
                 bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,implementor.connection());
@@ -263,7 +263,7 @@ public class reportesservlet extends HttpServlet {
                 int idDV = Integer.parseInt(request.getParameter("idDV"));
                 Map parametro = new HashMap();
                 parametro.put("Id_Venta", idDV);
-                File reporte = new File(getServletConfig().getServletContext().getRealPath("reportes/DetalleVenta.jasper"));
+                File reporte = new File(getServletConfig().getServletContext().getRealPath("/reportes/DetalleVenta.jasper"));
                 byte[] bytes;
                 trans.begin();
                 bytes = JasperRunManager.runReportToPdf(reporte.getPath(),parametro,implementor.connection());
@@ -287,7 +287,7 @@ public class reportesservlet extends HttpServlet {
                 int idDE = Integer.parseInt(request.getParameter("idDE"));
                 Map parametro = new HashMap();
                 parametro.put("Id_Entrada", idDE);
-                File reporte = new File(getServletConfig().getServletContext().getRealPath("reportes/DetalleEntrada.jasper"));
+                File reporte = new File(getServletConfig().getServletContext().getRealPath("/reportes/DetalleEntrada.jasper"));
                 byte[] bytes;
                 trans.begin();
                 bytes = JasperRunManager.runReportToPdf(reporte.getPath(),parametro,implementor.connection());

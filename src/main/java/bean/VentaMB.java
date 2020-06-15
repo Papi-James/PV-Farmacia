@@ -11,7 +11,6 @@ import entidades.DetalleEntrada;
 import entidades.DetalleVenta;
 import entidades.Venta;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -19,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +37,7 @@ import utilerias.Venta_Producto;
  *
  * @author ramms
  */
+@ManagedBean(name = "ventaMB")
 @Named(value = "ventaMB")
 @SessionScoped
 @Data

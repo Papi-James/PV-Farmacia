@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
@@ -19,6 +20,7 @@ import modelo.dto.MedicoDTO;
  *
  * @author papitojaime
  */
+@ManagedBean(name = "medicoMB")
 @Named(value = "medicoMB")
 @SessionScoped
 @Data
@@ -34,7 +36,8 @@ public class MedicoMB extends BaseBean implements Serializable{
     public void init(){
         listaDeMedicos = new ArrayList<>();
         listaDeMedicos = dao.readAll();
-        listaDeMedicos.remove(0);
+        if(listaDeMedicos.size()>=1)
+            listaDeMedicos.remove(0);
     }
     
     public String prepareAdd(){

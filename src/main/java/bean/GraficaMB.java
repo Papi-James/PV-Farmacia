@@ -27,8 +27,8 @@ import org.primefaces.model.chart.PieChartModel;
  *
  * @author ramms
  */
+@ManagedBean(name = "graficaMB")
 @Named(value = "graficaMB")
-@ManagedBean
 public class GraficaMB implements Serializable{
     private PieChartModel pieModel;
     private BarChartModel animatedModel2;

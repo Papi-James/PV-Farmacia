@@ -8,16 +8,18 @@ package bean;
 import static bean.BaseBean.ACC_ACTUALIZAR;
 import static bean.BaseBean.ACC_CREAR;
 import entidades.DetalleEntrada;
-import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +38,7 @@ import utilerias.Venta_Producto;
  *
  * @author ramms
  */
+@ManagedBean(name = "entradaMB")
 @Named(value = "entradaMB")
 @SessionScoped
 @Data
@@ -219,6 +222,7 @@ public class EntradaMB extends BaseBean implements Serializable {
         listaParaEntrada.add(vp);
         
         total = total.add(new BigDecimal(Float.parseFloat(costo)*cantidad));
+        total.setScale(4, RoundingMode.CEILING);
         contador++;
         cantidad=0;
         Codigo="";

@@ -67,6 +67,10 @@ public class reportesservlet extends HttpServlet {
                                 }else{
                                     if(accion.equals("reporteDetalleE")){
                                         reporteDetalleE(request, response);
+                                    }else{
+                                       if(accion.equals("reporteCategoria")){
+                                            reporteCategoria(request, response);
+                                       } 
                                     }
                                 }
                             }    
@@ -291,6 +295,27 @@ public class reportesservlet extends HttpServlet {
                 byte[] bytes;
                 trans.begin();
                 bytes = JasperRunManager.runReportToPdf(reporte.getPath(),parametro,implementor.connection());
+                trans.commit();
+                response.setContentType("application/pdf");
+                response.setContentLength(bytes.length);
+                sos.write(bytes, 0, bytes.length);
+                sos.flush();
+               
+            }
+        } catch (IOException e) {
+        }
+    }
+
+    private void reporteCategoria(HttpServletRequest request, HttpServletResponse response) throws JRException {
+       Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+        SessionImplementor implementor = (SessionImplementor)s;
+        Transaction trans = s.getTransaction();
+        try {
+            try (ServletOutputStream sos = response.getOutputStream()) {
+                File reporte = new File(getServletConfig().getServletContext().getRealPath("/reportes/GeneralCategoria.jasper"));
+                byte[] bytes;
+                trans.begin();
+                bytes = JasperRunManager.runReportToPdf(reporte.getPath(),null,implementor.connection());
                 trans.commit();
                 response.setContentType("application/pdf");
                 response.setContentLength(bytes.length);

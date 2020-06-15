@@ -6,13 +6,16 @@
 package bean;
 
 import entidades.Producto;
+import entidades.Venta;
 import javax.inject.Named;  
 import java.io.Serializable;  
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;  
 import modelo.dao.ProductoDAO;
+import modelo.dao.VentaDAO;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -30,6 +33,7 @@ public class GraficaMB implements Serializable{
     private PieChartModel pieModel;
     private BarChartModel animatedModel2;
     private List<Producto> listado;
+    private List<Venta> listadoT;
     
 
     @PostConstruct
@@ -60,14 +64,20 @@ public class GraficaMB implements Serializable{
     
     private BarChartModel initBarModel() {
         BarChartModel model = new BarChartModel();
- 
+        listadoT = new ArrayList();
+        
+        VentaDAO dao = new VentaDAO();
+        
+        listadoT = dao.readAll();
+        
         ChartSeries dineroVentas = new ChartSeries();
         dineroVentas.setLabel("Total Vendido");
-        dineroVentas.set("Venta 1", 2500);
-        dineroVentas.set("Venta 2", 100);
-        dineroVentas.set("Venta 3", 44);
-        dineroVentas.set("Venta 4", 150);
-        dineroVentas.set("Venta 5", 25);
+        for(int i=0;i<listadoT.size();i++){
+            BigDecimal numT = listadoT.get(i).getTotal();
+            Number total = (Number)numT;
+            String numVenta =String.valueOf(listadoT.get(i).getIdVenta());
+            dineroVentas.set("Numero de Venta:"+numVenta,total);
+        }
  
         model.addSeries(dineroVentas);
  
@@ -81,7 +91,7 @@ public class GraficaMB implements Serializable{
         animatedModel2.setLegendPosition("ne");
         Axis yAxis = animatedModel2.getAxis(AxisType.Y);
         yAxis.setMin(0);
-        yAxis.setMax(2000);
+        yAxis.setMax(1500);
     }
     
     private void createPieModel() {
